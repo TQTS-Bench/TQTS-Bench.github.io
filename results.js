@@ -1,4 +1,4 @@
-/* Scores from Table 1 of the accompanying paper. */
+/* Baselines from Table 1; reviewed submissions are added separately. */
 window.TQTS_RESULTS = {
   "source": "Table 1 of the accompanying paper",
   "metric": "Execution Accuracy (EX, %)",
@@ -16,7 +16,9 @@ window.TQTS_RESULTS = {
       "easy": 43.75,
       "medium": 20.07,
       "hard": 17.79,
-      "overall": 27.04
+      "overall": 27.04,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     },
     {
       "name": "DeepSeek-V4-Pro",
@@ -25,7 +27,9 @@ window.TQTS_RESULTS = {
       "easy": 39.89,
       "medium": 15.87,
       "hard": 11.79,
-      "overall": 22.51
+      "overall": 22.51,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     },
     {
       "name": "GLM-5.3-Flash",
@@ -34,7 +38,9 @@ window.TQTS_RESULTS = {
       "easy": 54.3,
       "medium": 28.88,
       "hard": 19.15,
-      "overall": 34.61
+      "overall": 34.61,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     },
     {
       "name": "Kimi-K3",
@@ -43,7 +49,9 @@ window.TQTS_RESULTS = {
       "easy": 58.26,
       "medium": 37.24,
       "hard": 34.08,
-      "overall": 43.15
+      "overall": 43.15,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     },
     {
       "name": "GPT-6-Sol",
@@ -52,7 +60,9 @@ window.TQTS_RESULTS = {
       "easy": 62.74,
       "medium": 40.63,
       "hard": 35.38,
-      "overall": 46.38
+      "overall": 46.38,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     },
     {
       "name": "Claude-Opus-5",
@@ -61,7 +71,9 @@ window.TQTS_RESULTS = {
       "easy": 62.79,
       "medium": 42.91,
       "hard": 41.92,
-      "overall": 48.98
+      "overall": 48.98,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     },
     {
       "name": "Gemini-3.7-Flash",
@@ -70,7 +82,9 @@ window.TQTS_RESULTS = {
       "easy": 63.25,
       "medium": 37.68,
       "hard": 32.92,
-      "overall": 44.65
+      "overall": 44.65,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     },
     {
       "name": "DeepEye-SQL",
@@ -80,7 +94,9 @@ window.TQTS_RESULTS = {
       "easy": 14.82,
       "medium": 1.92,
       "hard": 1.16,
-      "overall": 5.83
+      "overall": 5.83,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     },
     {
       "name": "OpenSearch-SQL",
@@ -90,7 +106,9 @@ window.TQTS_RESULTS = {
       "easy": 16.37,
       "medium": 1.84,
       "hard": 1.09,
-      "overall": 6.27
+      "overall": 6.27,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     },
     {
       "name": "RSL-SQL",
@@ -100,7 +118,9 @@ window.TQTS_RESULTS = {
       "easy": 11.99,
       "medium": 1.33,
       "hard": 0.95,
-      "overall": 4.62
+      "overall": 4.62,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     },
     {
       "name": "DAIL-SQL",
@@ -110,7 +130,9 @@ window.TQTS_RESULTS = {
       "easy": 1.34,
       "medium": 0.26,
       "hard": 0,
-      "overall": 0.54
+      "overall": 0.54,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     },
     {
       "name": "DIN-SQL",
@@ -120,7 +142,9 @@ window.TQTS_RESULTS = {
       "easy": 12.25,
       "medium": 2.17,
       "hard": 1.23,
-      "overall": 5.14
+      "overall": 5.14,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     },
     {
       "name": "PromCopilot",
@@ -130,7 +154,9 @@ window.TQTS_RESULTS = {
       "easy": 1.8,
       "medium": 0.22,
       "hard": 0.07,
-      "overall": 0.69
+      "overall": 0.69,
+      "source": "benchmark-baseline",
+      "verification": "verified"
     }
   ],
   "human": {
