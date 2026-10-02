@@ -18,10 +18,9 @@
 <body>
   <a class="skip-link" href="#leaderboard">Skip to leaderboard</a>
   <header class="hero">
-    <nav class="topnav container" aria-label="Main navigation">
-      <a class="wordmark" href="#top"><img class="icon" src="database.svg" alt="" width="22" height="22">TQTS-Bench</a>
-      <div class="nav-actions"><a href="#leaderboard">Leaderboard</a><a href="#papers">Latest Papers</a></div>
-    </nav>
+    <div class="topnav container">
+      <span class="wordmark"><img class="icon" src="database.svg" alt="" width="22" height="22">TQTS-Bench</span>
+    </div>
     <div class="hero-copy container" id="top">
       <h1>TQTS-Bench</h1>
       <p class="subtitle">A Multi-Syntax Benchmark for Text-to-Query<br class="desktop-break"> over Time-Series Databases</p>
@@ -112,12 +111,14 @@
     <section class="leaderboard" id="leaderboard" aria-labelledby="leaderboard-title">
       <div class="board-heading">
         <h2 id="leaderboard-title"><img class="icon" src="trophy.svg" alt="" width="28" height="28">Leaderboard</h2>
-        <p>Evaluation results on TQTS-Bench.</p>
+        <p>Evaluation results and related research on text-to-query over time-series data.</p>
       </div>
-      <div class="score-switch" aria-label="Result provenance">
-        <button type="button" data-score-view="verified" aria-pressed="true">Verified &amp; baselines</button>
-        <button type="button" data-score-view="reported" aria-pressed="false">Paper-reported <span id="reported-count">0</span></button>
+      <div class="view-switch" role="tablist" aria-label="Leaderboard content">
+        <button type="button" id="view-verified" role="tab" data-view="verified" aria-selected="true" aria-controls="leaderboard-view">Verified Results</button>
+        <button type="button" id="view-auto" role="tab" data-view="auto" aria-selected="false" aria-controls="leaderboard-view" tabindex="-1">Auto-collected <span id="reported-count">0</span></button>
+        <button type="button" id="view-papers" role="tab" data-view="papers" aria-selected="false" aria-controls="papers-view" tabindex="-1">Latest Papers <span id="paper-count">0</span></button>
       </div>
+      <div id="leaderboard-view" role="tabpanel" aria-labelledby="view-verified">
       <div class="tabs" role="tablist" aria-label="Leaderboard category" hidden>
         <button type="button" id="tab-overall" role="tab" aria-selected="true" aria-controls="results-panel" data-category="overall">Overall <span>13</span></button>
         <button type="button" id="tab-methods" role="tab" aria-selected="false" aria-controls="results-panel" tabindex="-1" data-category="method">Methods <span>6</span></button>
@@ -168,12 +169,9 @@
         <p>EX (%) is the Overall EX reported in Table 1 of the accompanying paper. Ranks are calculated within the selected category.</p>
         <p>Dates under Rank indicate the initial leaderboard publication date, September 28, 2026 (UTC), not the execution time of each experiment.</p>
       </section>
-    </section>
-    <section class="papers-section" id="papers" aria-labelledby="papers-title">
-      <div class="board-heading">
-        <h2 id="papers-title"><img class="icon" src="book-2.svg" alt="" width="28" height="28">Latest Papers <span id="paper-count" class="paper-count">0</span></h2>
-        <p>Recent arXiv research on natural-language querying over time-series data. Inclusion does not imply a TQTS-Bench result.</p>
       </div>
+      <div id="papers-view" role="tabpanel" aria-labelledby="view-papers" hidden>
+        <p class="discovery-intro">Recent arXiv research on natural-language querying over time-series data. Inclusion does not imply a TQTS-Bench result.</p>
         <div class="papers-controls">
           <label for="paper-search">Search papers<input id="paper-search" type="search" placeholder="Title, author, or topic" autocomplete="off"></label>
           <label class="code-filter"><input id="paper-has-code" type="checkbox"> Has code</label>
@@ -181,6 +179,7 @@
         <div id="papers-list" class="papers-list"></div>
         <div class="papers-footer"><span id="papers-visible-count" role="status" aria-live="polite">0 papers</span><button type="button" id="show-more-papers" hidden>Show more</button></div>
         <p class="sync-note" id="sync-note">Paper discovery has not run yet.</p>
+      </div>
     </section>
     </div>
   </main>
