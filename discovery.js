@@ -1,6 +1,6 @@
 window.TQTS_DISCOVERY = {
   "schemaVersion": 1,
-  "lastSuccessfulSync": "2026-10-02T08:50:11Z",
+  "lastSuccessfulSync": "2026-10-02T09:28:34Z",
   "papers": [
     {
       "id": "2607.07073",
@@ -74,7 +74,7 @@ window.TQTS_DISCOVERY = {
       "published": "2026-02-19T01:51:52Z",
       "updated": "2026-06-10T12:34:11Z",
       "url": "https://arxiv.org/abs/2602.17001",
-      "codeUrl": null,
+      "codeUrl": "https://github.com/Atlamtiz/Sonar-TS",
       "source": "auto-collected"
     },
     {
@@ -96,7 +96,7 @@ window.TQTS_DISCOVERY = {
       "published": "2025-03-05T02:22:01Z",
       "updated": "2026-03-11T16:58:48Z",
       "url": "https://arxiv.org/abs/2503.03114",
-      "codeUrl": null,
+      "codeUrl": "https://github.com/FudanSELab/PromCopilot",
       "source": "auto-collected"
     }
   ],
