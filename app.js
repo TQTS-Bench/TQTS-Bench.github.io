@@ -13,7 +13,7 @@
   const paperById = new Map(papers.map(paper => [paper.id, paper]));
   const scoreByPaperId = new Map(reported.map(result => [result.paperId, result]));
   const body = document.querySelector('#results-body');
-  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  const tabs = [...document.querySelectorAll('.tabs [role="tab"]')];
   const search = document.querySelector('#search');
   let category = 'overall';
   let metric = 'overall';
@@ -104,7 +104,7 @@
       const cell = document.createElement('td');
       cell.colSpan = 3;
       cell.className = 'empty-state';
-      cell.textContent = scoreView === 'reported' && !reported.length ? 'No papers have reported an unambiguous Overall EX result on TQTS-Bench yet.' : 'No matching entries. Try another name or clear the search.';
+      cell.textContent = scoreView === 'reported' && !reported.length ? 'No paper abstracts currently report an unambiguous Overall EX result on TQTS-Bench. Automatically collected scores are not independently verified.' : 'No matching entries. Try another name or clear the search.';
       row.append(cell);
       body.append(row);
     }
@@ -157,15 +157,36 @@
   document.querySelector('.tabs').hidden = false;
   document.querySelector('.search-control').hidden = false;
   document.querySelector('#reported-count').textContent = String(reported.length);
-  selectTab(tabs[0]);
-  function selectScoreView(value) {
-    scoreView = value;
-    for (const button of document.querySelectorAll('[data-score-view]')) button.setAttribute('aria-pressed', String(button.dataset.scoreView === value));
-    document.querySelector('#human-reference').hidden = value === 'reported';
-    document.querySelector('.reading-notes').hidden = value === 'reported';
-    selectTab(tabs[0]);
+  const viewTabs = [...document.querySelectorAll('[data-view]')];
+  function selectView(value) {
+    scoreView = value === 'auto' ? 'reported' : 'verified';
+    document.querySelector('#leaderboard-view').hidden = value === 'papers';
+    document.querySelector('#papers-view').hidden = value !== 'papers';
+    document.querySelector('#leaderboard-view').setAttribute('aria-labelledby', value === 'auto' ? 'view-auto' : 'view-verified');
+    document.querySelector('#human-reference').hidden = value !== 'verified';
+    document.querySelector('.reading-notes').hidden = value !== 'verified';
+    for (const tab of viewTabs) {
+      const active = tab.dataset.view === value;
+      tab.setAttribute('aria-selected', String(active));
+      tab.tabIndex = active ? 0 : -1;
+    }
+    if (value !== 'papers') selectTab(tabs[0]);
   }
-  document.querySelectorAll('[data-score-view]').forEach(button => button.addEventListener('click', () => selectScoreView(button.dataset.scoreView)));
+  viewTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => selectView(tab.dataset.view));
+    tab.addEventListener('keydown', event => {
+      let next;
+      if (event.key === 'ArrowRight') next = (index + 1) % viewTabs.length;
+      if (event.key === 'ArrowLeft') next = (index + viewTabs.length - 1) % viewTabs.length;
+      if (event.key === 'Home') next = 0;
+      if (event.key === 'End') next = viewTabs.length - 1;
+      if (next === undefined) return;
+      event.preventDefault();
+      viewTabs[next].focus();
+      selectView(viewTabs[next].dataset.view);
+    });
+  });
+  selectView('verified');
   const paperSearch = document.querySelector('#paper-search');
   const hasCode = document.querySelector('#paper-has-code');
   const paperList = document.querySelector('#papers-list');
@@ -201,7 +222,7 @@
         resultButton.type = 'button';
         resultButton.textContent = 'View result →';
         resultButton.addEventListener('click', () => {
-          selectScoreView('reported');
+          selectView('auto');
           search.value = scoreByPaperId.get(paper.id).name;
           renderScores();
           document.querySelector('#leaderboard').scrollIntoView();
