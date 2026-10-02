@@ -1,0 +1,21 @@
+/* Extend the existing light, green research-site design without changing it. */
+.submission-hero { min-height:0; }
+.submission-hero .hero-copy { padding:44px 0 48px; }
+.submission-hero h1 { font-size:clamp(32px,4vw,48px); }
+.submission-hero .subtitle { font-size:20px; margin-top:18px; }
+.submission-content { max-width:860px; padding-top:38px; }
+.submission-content section { margin-bottom:38px; }
+.submission-content h2 { display:flex; align-items:center; gap:12px; font-size:24px; line-height:1.35; margin:0 0 16px; }
+.submission-content p { margin:12px 0; }
+.submission-content code { font-size:.9em; overflow-wrap:anywhere; }
+.submission-note { padding:18px 20px; border-left:3px solid var(--accent); background:var(--soft); }
+.submission-files { margin:0; }
+.submission-files div { display:grid; grid-template-columns:170px minmax(0,1fr); gap:24px; padding:16px 0; border-bottom:1px solid var(--line); }
+.submission-files dt { font-weight:700; color:var(--accent); }
+.submission-files dd { margin:0; }
+.submission-content details { margin-top:24px; padding:16px 20px; border:1px solid var(--line); border-radius:5px; }
+.submission-content summary { cursor:pointer; font-weight:600; }
+.submission-content pre { overflow-x:auto; padding:16px; background:var(--soft); line-height:1.65; }
+.submission-content li { margin-bottom:12px; padding-left:4px; }
+.submission-content ul { padding-left:22px; }
+@media(max-width:540px) { .submission-files div { grid-template-columns:1fr; gap:6px; } .submission-content h2 { font-size:22px; } .submission-hero .hero-copy { padding:32px 0; } .submission-content details { padding:14px; } }

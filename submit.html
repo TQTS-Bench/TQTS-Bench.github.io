@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="description" content="Submit predicted queries and database execution results to the TQTS-Bench leaderboard.">
+  <meta name="color-scheme" content="light">
+  <title>TQTS-Bench | Submission Guidelines</title>
+  <link rel="icon" href="database.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="submit.css">
+</head>
+<body>
+  <a class="skip-link" href="#guidelines">Skip to submission guidelines</a>
+  <header class="hero submission-hero">
+    <nav class="topnav container" aria-label="Main navigation">
+      <a class="wordmark" href="index.html#top"><img class="icon" src="database.svg" alt="" width="22" height="22">TQTS-Bench</a>
+      <div class="nav-actions"><a href="index.html#leaderboard">Leaderboard</a></div>
+    </nav>
+    <div class="hero-copy container">
+      <h1>Submission Guidelines</h1>
+      <p class="subtitle">Share your predicted queries and database execution results.</p>
+    </div>
+  </header>
+  <main id="guidelines" class="submission-content container">
+    <section aria-labelledby="submit-title">
+      <h2 id="submit-title"><img class="icon" src="send.svg" alt="" width="24" height="24">Submit to the leaderboard</h2>
+      <p>To request a leaderboard entry, email your submission archive or a downloadable link to <a href="mailto:lex2m673@gmail.com">lex2m673@gmail.com</a>. Use the subject <code>[TQTS-Bench Submission] &lt;method name&gt;</code>.</p>
+      <p>Include a short method description, your preferred display name, and any self-evaluated scores. Submissions are reviewed before leaderboard inclusion; sending an email does not automatically create an entry.</p>
+      <p class="submission-note"><strong>Both are required:</strong> the final predicted SQL (or native TSDB query) for each question, and the actual result obtained by executing that query against its benchmark database.</p>
+    </section>
+    <section aria-labelledby="files-title">
+      <h2 id="files-title"><img class="icon" src="file-text.svg" alt="" width="24" height="24">Prepare your files</h2>
+      <dl class="submission-files">
+        <div><dt>Predicted queries</dt><dd>Provide the exact final query text in UTF-8. Use SQL where applicable and the database's native query syntax otherwise. Preserve package identifiers and question identifiers from the benchmark release.</dd></div>
+        <div><dt>Execution results</dt><dd>Provide complete, machine-readable outputs, not screenshots, summaries, or scores alone. CSV is suitable for tabular outputs; JSON is suitable for structured outputs. Preserve column names, values, row order, timestamps and precision. Document types and null encoding; include all result sets when applicable.</dd></div>
+        <div><dt>Manifest</dt><dd>Map each package and question to its query file and result file. Record execution status, including errors, timeouts, skipped questions and successful empty results. A missing output must not be represented as an empty successful result.</dd></div>
+        <div><dt>Run description</dt><dd>State the benchmark release or revision, evaluated packages and questions, database versions and relevant settings, model/version, method, prompts, decoding settings, tools, execution timeouts, and any training or tuning on benchmark material. Include commands or scripts needed to reproduce the run where available.</dd></div>
+      </dl>
+      <details>
+        <summary>Suggested archive layout</summary>
+        <pre><code>submission.zip
+  README.md
+  manifest.jsonl
+  queries/
+    &lt;package_id&gt;/&lt;question_id&gt;.sql
+  results/
+    &lt;package_id&gt;/&lt;question_id&gt;.csv</code></pre>
+        <p>This layout is a suggestion, not an evaluator-specific schema. Use <code>.txt</code> for non-SQL queries and <code>.json</code> for non-tabular results. Your manifest must unambiguously connect every output to the original benchmark question.</p>
+      </details>
+    </section>
+    <section aria-labelledby="evaluation-title">
+      <h2 id="evaluation-title"><img class="icon" src="trophy.svg" alt="" width="24" height="24">Keep evaluation comparable</h2>
+      <ul>
+        <li>Submit one final prediction and its corresponding execution result per question. If the system generates multiple candidates, describe its automatic selection procedure; do not manually choose answers using reference results.</li>
+        <li>Execute predictions on the benchmark database contents without changing the data to make predictions succeed. Disclose any import transformations, unavailable packages, or other departures from the released setup.</li>
+        <li>Report the full evaluated scope, including failures. Clearly label partial evaluations and their denominator; do not present a subset score as a full-benchmark score.</li>
+        <li>Disclose access to reference queries or answers, manual intervention, and any additional information supplied to the model.</li>
+      </ul>
+    </section>
+    <section aria-labelledby="anonymous-title">
+      <h2 id="anonymous-title"><img class="icon" src="users.svg" alt="" width="24" height="24">Prepare an anonymous submission</h2>
+      <p>Use a method alias if you wish to remain anonymous. Author names and affiliations are not required in the submission archive. Check file metadata, shared-link names and logs for identifying information.</p>
+      <p>Do not include credentials, access tokens, private connection strings, internal hostnames or personal filesystem paths. Remove these from configuration and logs without altering query semantics or result values. If required outputs contain sensitive material, contact the submission address before sending them; do not silently redact evaluation results.</p>
+      <p>No database dumps or source datasets are required. Submit predictions, execution outputs and reproducibility information only.</p>
+    </section>
+  </main>
+  <footer class="container site-footer"><span>TQTS-Bench</span><p>Submission guidelines</p><a href="index.html#top">Back to benchmark</a></footer>
+</body>
+</html>
