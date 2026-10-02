@@ -9,7 +9,7 @@
   <meta name="description" content="TQTS-Bench: A Multi-Syntax Benchmark for Text-to-Query over Time-Series Databases. Explore the evaluation results reported in the paper.">
   <meta name="color-scheme" content="light">
   <title>TQTS-Bench | Leaderboard</title>
-  <link rel="icon" href="database.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/icons/database.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
   <script src="results.js" defer></script>
   <script src="discovery.js" defer></script>
@@ -19,8 +19,8 @@
   <a class="skip-link" href="#leaderboard">Skip to leaderboard</a>
   <header class="hero">
     <nav class="topnav container" aria-label="Main navigation">
-      <a class="wordmark" href="#top"><img class="icon" src="database.svg" alt="" width="22" height="22">TQTS-Bench</a>
-      <div class="nav-actions"><a href="#leaderboard">Leaderboard <span aria-hidden="true">↗</span></a></div>
+      <a class="wordmark" href="#top"><img class="icon" src="assets/icons/database.svg" alt="" width="22" height="22">TQTS-Bench</a>
+      <div class="nav-actions"><a href="#leaderboard">Leaderboard</a><a href="#papers">Latest Papers</a></div>
     </nav>
     <div class="hero-copy container" id="top">
       <h1>TQTS-Bench</h1>
@@ -31,46 +31,46 @@
   <main class="container page-grid">
     <aside class="sidebar" aria-label="About the benchmark">
       <section id="about" class="side-section">
-        <h2><img class="icon" src="book-2.svg" alt="" width="21" height="21">About TQTS-Bench</h2>
+        <h2><img class="icon" src="assets/icons/book-2.svg" alt="" width="21" height="21">About TQTS-Bench</h2>
         <p>TQTS-Bench is a multi-syntax benchmark for evaluating text-to-query capabilities over TSDBs.</p>
         <p>TQTS-Bench contains <strong>6,125</strong> text-to-query question-answering (QA) pairs, spanning <strong>97 TSDBs</strong> with <strong>23 distinct query syntaxes</strong>. These TSDBs span <strong>22 application domains</strong>, while the QA pairs cover <strong>4 time-specific query intents</strong>.</p>
         <p>It is constructed through a human-centric AI-assisted workflow, where all QA pairs are carefully reviewed and revised by domain experts to ensure quality and correctness.</p>
         <p>We conduct a comprehensive evaluation of advanced LLMs and representative text-to-query methods on TQTS-Bench. The results show that current LLMs still struggle with TQTS tasks.</p>
         <div class="about-links">
-          <button class="button" type="button" data-coming-soon="Paper" aria-controls="resource-status"><img class="icon" src="file-text.svg" alt="" width="19" height="19">Paper</button>
-          <a class="button" href="https://anonymous.4open.science/r/TQTS-Bench-00CD" target="_blank" rel="noopener noreferrer"><img class="icon" src="code.svg" alt="" width="19" height="19">Code</a>
-          <a class="button" href="https://huggingface.co/datasets/TQTS-Bench/TQTS-Bench" target="_blank" rel="noopener noreferrer"><img class="icon" src="database.svg" alt="" width="19" height="19">Data</a>
-          <a class="button" href="submit.html"><img class="icon" src="send.svg" alt="" width="19" height="19">Submit</a>
+          <button class="button" type="button" data-coming-soon="Paper" aria-controls="resource-status"><img class="icon" src="assets/icons/file-text.svg" alt="" width="19" height="19">Paper</button>
+          <a class="button" href="https://anonymous.4open.science/r/TQTS-Bench-00CD" target="_blank" rel="noopener noreferrer"><img class="icon" src="assets/icons/code.svg" alt="" width="19" height="19">Code</a>
+          <a class="button" href="https://huggingface.co/datasets/TQTS-Bench/TQTS-Bench" target="_blank" rel="noopener noreferrer"><img class="icon" src="assets/icons/database.svg" alt="" width="19" height="19">Data</a>
+          <a class="button" href="submit.html"><img class="icon" src="assets/icons/send.svg" alt="" width="19" height="19">Submit</a>
         </div>
         <p id="resource-status" role="status" aria-live="polite" hidden></p>
         <noscript><p>Paper coming soon.</p></noscript>
       </section>
       <section id="highlights" class="side-section">
-        <h2><img class="icon" src="sparkles.svg" alt="" width="21" height="21">Benchmark Highlights</h2>
+        <h2><img class="icon" src="assets/icons/sparkles.svg" alt="" width="21" height="21">Benchmark Highlights</h2>
         <dl class="facts">
           <div><dt>High-quality QA pairs</dt><dd>6,125</dd></div>
           <div><dt>Time-series databases</dt><dd>97</dd></div>
           <div><dt>Distinct query syntaxes</dt><dd>23</dd></div>
           <div><dt>Application domains</dt><dd>22</dd></div>
         </dl>
-        <p class="expert-note"><img class="icon" src="clock.svg" alt="" width="20" height="20"><span>More than <strong>600 hours</strong> of expert annotation and verification.</span></p>
+        <p class="expert-note"><img class="icon" src="assets/icons/clock.svg" alt="" width="20" height="20"><span>More than <strong>600 hours</strong> of expert annotation and verification.</span></p>
       </section>
       <section id="news" class="side-section">
-        <h2><img class="icon" src="news.svg" alt="" width="21" height="21">News</h2>
+        <h2><img class="icon" src="assets/icons/news.svg" alt="" width="21" height="21">News</h2>
         <p class="news-label"><time datetime="2026-09-28">Sep 28, 2026</time> (UTC)</p>
         <p>The leaderboard presents evaluation results for 7 models and 6 text-to-query methods.</p>
       </section>
       <section id="motivation" class="side-section motivation-section">
-        <h2><img class="icon" src="bulb.svg" alt="" width="21" height="21">Why TQTS-Bench?</h2>
+        <h2><img class="icon" src="assets/icons/bulb.svg" alt="" width="21" height="21">Why TQTS-Bench?</h2>
         <p>Time-series data are widely used in real-world applications, such as the Internet of Things (IoT), AIOps, and cloud services. However, analyzing data stored in TSDBs remains challenging because retrieving such data requires learning specialized query syntax, particularly for users without expertise in databases.</p>
         <p>Recent studies have begun to develop text-to-query techniques specifically for TSDBs (TQTS). However, it remains unclear how far these methods have advanced TQTS capabilities due to the lack of a comprehensive TQTS benchmark comparable to Spider and BIRD for RDBs.</p>
         <p>Constructing a TQTS benchmark is not a straightforward extension of text-to-query benchmarks for RDBs, owing to three key differences:</p>
         <figure class="motivation-figure">
-          <a class="figure-link" href="figure-1.png" target="_blank" rel="noopener noreferrer" aria-label="Open Figure 1 at full resolution in a new tab">
-            <img src="figure-1.png" width="2400" height="970" loading="lazy" decoding="async" alt="Figure 1 compares relational and time-series databases across query syntaxes, application domains, and query intents. RDBs use unified SQL, cover narrower domains, and emphasize time-agnostic operations; TSDBs use diverse syntaxes, cover broader domains, and support time-specific analysis.">
+          <a class="figure-link" href="assets/figures/figure-1.png" target="_blank" rel="noopener noreferrer" aria-label="Open Figure 1 at full resolution in a new tab">
+            <img src="assets/figures/figure-1.png" width="2400" height="970" loading="lazy" decoding="async" alt="Figure 1 compares relational and time-series databases across query syntaxes, application domains, and query intents. RDBs use unified SQL, cover narrower domains, and emphasize time-agnostic operations; TSDBs use diverse syntaxes, cover broader domains, and support time-specific analysis.">
           </a>
           <figcaption><strong>Figure 1.</strong> The three key differences between RDBs and TSDBs: (a) <strong>Syntaxes:</strong> unified SQL vs. diverse, non-uniform query syntaxes. (b) <strong>Domains:</strong> narrow domain coverage vs. broad domain coverage. (c) <strong>Intents:</strong> time-agnostic operations vs. time-specific analysis.</figcaption>
-          <a class="figure-enlarge" href="figure-1.png" target="_blank" rel="noopener noreferrer">View full-size figure <span aria-hidden="true">↗</span></a>
+          <a class="figure-enlarge" href="assets/figures/figure-1.png" target="_blank" rel="noopener noreferrer">View full-size figure <span aria-hidden="true">↗</span></a>
         </figure>
         <dl class="motivation-points">
           <div><dt>Syntaxes</dt><dd>For TSDBs, their query syntaxes can be substantially different. For example, Flux in InfluxDB adopts a pipeline-style syntax, whereas PromQL in Prometheus relies on nested, function-oriented expressions.</dd></div>
@@ -80,44 +80,40 @@
         <p>Due to the three differences above, rather than simply extending existing text-to-query benchmarks for RDBs, we construct TQTS-Bench, a new benchmark specifically designed for text-to-query over TSDBs.</p>
       </section>
       <section id="supported-tsdbs" class="side-section supported-section">
-        <h2><img class="icon" src="database.svg" alt="" width="21" height="21">Supported TSDBs</h2>
+        <h2><img class="icon" src="assets/icons/database.svg" alt="" width="21" height="21">Supported TSDBs</h2>
         <p class="small-copy">23 management systems. InfluxDB 2 and 3 are grouped in one tile. Select a system to visit its official website or documentation.</p>
-        <div class="tsdb-grid" id="tsdb-grid"><a class="tsdb-tile" href="https://www.influxdata.com/" target="_blank" rel="noopener noreferrer" aria-label="InfluxDB 2 / 3 official website or documentation, 17 TSDBs"><img src="influxdb.png" alt="" width="34" height="34" loading="lazy"><strong>InfluxDB 2 / 3</strong><span>17 TSDBs</span></a>
-<a class="tsdb-tile" href="https://prometheus.io/" target="_blank" rel="noopener noreferrer" aria-label="Prometheus official website or documentation, 13 TSDBs"><img src="prometheus.png" alt="" width="34" height="34" loading="lazy"><strong>Prometheus</strong><span>13 TSDBs</span></a>
-<a class="tsdb-tile" href="https://www.timescale.com/" target="_blank" rel="noopener noreferrer" aria-label="TimescaleDB official website or documentation, 8 TSDBs"><img src="timescaledb.png" alt="" width="34" height="34" loading="lazy"><strong>TimescaleDB</strong><span>8 TSDBs</span></a>
-<a class="tsdb-tile" href="https://www.dolphindb.com/" target="_blank" rel="noopener noreferrer" aria-label="DolphinDB official website or documentation, 5 TSDBs"><img src="dolphindb.png" alt="" width="34" height="34" loading="lazy"><strong>DolphinDB</strong><span>5 TSDBs</span></a>
-<a class="tsdb-tile" href="https://druid.apache.org/" target="_blank" rel="noopener noreferrer" aria-label="Apache Druid official website or documentation, 4 TSDBs"><img src="druid.png" alt="" width="34" height="34" loading="lazy"><strong>Apache Druid</strong><span>4 TSDBs</span></a>
-<a class="tsdb-tile" href="https://questdb.com/" target="_blank" rel="noopener noreferrer" aria-label="QuestDB official website or documentation, 5 TSDBs"><img src="questdb.png" alt="" width="34" height="34" loading="lazy"><strong>QuestDB</strong><span>5 TSDBs</span></a>
-<a class="tsdb-tile" href="https://tdengine.com/" target="_blank" rel="noopener noreferrer" aria-label="TDengine official website or documentation, 4 TSDBs"><img src="tdengine.png" alt="" width="34" height="34" loading="lazy"><strong>TDengine</strong><span>4 TSDBs</span></a>
-<a class="tsdb-tile" href="https://iotdb.apache.org/" target="_blank" rel="noopener noreferrer" aria-label="Apache IoTDB official website or documentation, 4 TSDBs"><img src="iotdb.png" alt="" width="34" height="34" loading="lazy"><strong>Apache IoTDB</strong><span>4 TSDBs</span></a>
-<a class="tsdb-tile" href="https://victoriametrics.com/" target="_blank" rel="noopener noreferrer" aria-label="VictoriaMetrics official website or documentation, 3 TSDBs"><img src="victoriametrics.png" alt="" width="34" height="34" loading="lazy"><strong>VictoriaMetrics</strong><span>3 TSDBs</span></a>
-<a class="tsdb-tile" href="https://basekick.net/" target="_blank" rel="noopener noreferrer" aria-label="Arc official website or documentation, 2 TSDBs"><img src="arc.svg" alt="" width="34" height="34" loading="lazy"><strong>Arc</strong><span>2 TSDBs</span></a>
-<a class="tsdb-tile" href="https://griddb.net/en/" target="_blank" rel="noopener noreferrer" aria-label="GridDB official website or documentation, 4 TSDBs"><img src="griddb.png" alt="" width="34" height="34" loading="lazy"><strong>GridDB</strong><span>4 TSDBs</span></a>
-<a class="tsdb-tile" href="https://m3db.io/" target="_blank" rel="noopener noreferrer" aria-label="M3DB official website or documentation, 1 TSDB"><img src="m3db.png" alt="" width="34" height="34" loading="lazy"><strong>M3DB</strong><span>1 TSDB</span></a>
-<a class="tsdb-tile" href="https://cratedb.com/" target="_blank" rel="noopener noreferrer" aria-label="CrateDB official website or documentation, 4 TSDBs"><img src="cratedb.png" alt="" width="34" height="34" loading="lazy"><strong>CrateDB</strong><span>4 TSDBs</span></a>
-<a class="tsdb-tile" href="https://www.cnosdb.com/" target="_blank" rel="noopener noreferrer" aria-label="CnosDB official website or documentation, 3 TSDBs"><img src="cnosdb.png" alt="" width="34" height="34" loading="lazy"><strong>CnosDB</strong><span>3 TSDBs</span></a>
-<a class="tsdb-tile" href="https://arcadedb.com/" target="_blank" rel="noopener noreferrer" aria-label="ArcadeDB official website or documentation, 1 TSDB"><img src="arcadedb.png" alt="" width="34" height="34" loading="lazy"><strong>ArcadeDB</strong><span>1 TSDB</span></a>
-<a class="tsdb-tile" href="https://greptime.com/" target="_blank" rel="noopener noreferrer" aria-label="GreptimeDB official website or documentation, 1 TSDB"><img src="greptimedb.png" alt="" width="34" height="34" loading="lazy"><strong>GreptimeDB</strong><span>1 TSDB</span></a>
-<a class="tsdb-tile" href="https://www.ibm.com/docs/en/db2-event-store/2.0.0" target="_blank" rel="noopener noreferrer" aria-label="IBM Db2 Event Store official website or documentation, 4 TSDBs"><img src="ibm.png" alt="" width="34" height="34" loading="lazy"><strong>IBM Db2 Event Store</strong><span>4 TSDBs</span></a>
-<a class="tsdb-tile" href="https://docs.riak.com/riak/ts/1.5.2/" target="_blank" rel="noopener noreferrer" aria-label="Riak TS official website or documentation, 2 TSDBs"><img src="riak.png" alt="" width="34" height="34" loading="lazy"><strong>Riak TS</strong><span>2 TSDBs</span></a>
-<a class="tsdb-tile" href="https://bangdb.com/" target="_blank" rel="noopener noreferrer" aria-label="BangDB official website or documentation, 3 TSDBs"><img src="bangdb.png" alt="" width="34" height="34" loading="lazy"><strong>BangDB</strong><span>3 TSDBs</span></a>
-<a class="tsdb-tile" href="https://www.machbase.com/" target="_blank" rel="noopener noreferrer" aria-label="Machbase Neo official website or documentation, 5 TSDBs"><img src="machbase.png" alt="" width="34" height="34" loading="lazy"><strong>Machbase Neo</strong><span>5 TSDBs</span></a>
-<a class="tsdb-tile" href="https://github.com/4paradigm/OpenMLDB" target="_blank" rel="noopener noreferrer" aria-label="OpenMLDB official website or documentation, 3 TSDBs"><img src="openmldb.png" alt="" width="34" height="34" loading="lazy"><strong>OpenMLDB</strong><span>3 TSDBs</span></a>
-<a class="tsdb-tile" href="https://opengemini.github.io/" target="_blank" rel="noopener noreferrer" aria-label="openGemini official website or documentation, 1 TSDB"><img src="opengemini.png" alt="" width="34" height="34" loading="lazy"><strong>openGemini</strong><span>1 TSDB</span></a></div>
+        <div class="tsdb-grid" id="tsdb-grid"><a class="tsdb-tile" href="https://www.influxdata.com/" target="_blank" rel="noopener noreferrer" aria-label="InfluxDB 2 / 3 official website or documentation, 17 TSDBs"><img src="assets/logos/influxdb.png" alt="" width="34" height="34" loading="lazy"><strong>InfluxDB 2 / 3</strong><span>17 TSDBs</span></a>
+<a class="tsdb-tile" href="https://prometheus.io/" target="_blank" rel="noopener noreferrer" aria-label="Prometheus official website or documentation, 13 TSDBs"><img src="assets/logos/prometheus.png" alt="" width="34" height="34" loading="lazy"><strong>Prometheus</strong><span>13 TSDBs</span></a>
+<a class="tsdb-tile" href="https://www.timescale.com/" target="_blank" rel="noopener noreferrer" aria-label="TimescaleDB official website or documentation, 8 TSDBs"><img src="assets/logos/timescaledb.png" alt="" width="34" height="34" loading="lazy"><strong>TimescaleDB</strong><span>8 TSDBs</span></a>
+<a class="tsdb-tile" href="https://www.dolphindb.com/" target="_blank" rel="noopener noreferrer" aria-label="DolphinDB official website or documentation, 5 TSDBs"><img src="assets/logos/dolphindb.png" alt="" width="34" height="34" loading="lazy"><strong>DolphinDB</strong><span>5 TSDBs</span></a>
+<a class="tsdb-tile" href="https://druid.apache.org/" target="_blank" rel="noopener noreferrer" aria-label="Apache Druid official website or documentation, 4 TSDBs"><img src="assets/logos/druid.png" alt="" width="34" height="34" loading="lazy"><strong>Apache Druid</strong><span>4 TSDBs</span></a>
+<a class="tsdb-tile" href="https://questdb.com/" target="_blank" rel="noopener noreferrer" aria-label="QuestDB official website or documentation, 5 TSDBs"><img src="assets/logos/questdb.png" alt="" width="34" height="34" loading="lazy"><strong>QuestDB</strong><span>5 TSDBs</span></a>
+<a class="tsdb-tile" href="https://tdengine.com/" target="_blank" rel="noopener noreferrer" aria-label="TDengine official website or documentation, 4 TSDBs"><img src="assets/logos/tdengine.png" alt="" width="34" height="34" loading="lazy"><strong>TDengine</strong><span>4 TSDBs</span></a>
+<a class="tsdb-tile" href="https://iotdb.apache.org/" target="_blank" rel="noopener noreferrer" aria-label="Apache IoTDB official website or documentation, 4 TSDBs"><img src="assets/logos/iotdb.png" alt="" width="34" height="34" loading="lazy"><strong>Apache IoTDB</strong><span>4 TSDBs</span></a>
+<a class="tsdb-tile" href="https://victoriametrics.com/" target="_blank" rel="noopener noreferrer" aria-label="VictoriaMetrics official website or documentation, 3 TSDBs"><img src="assets/logos/victoriametrics.png" alt="" width="34" height="34" loading="lazy"><strong>VictoriaMetrics</strong><span>3 TSDBs</span></a>
+<a class="tsdb-tile" href="https://basekick.net/" target="_blank" rel="noopener noreferrer" aria-label="Arc official website or documentation, 2 TSDBs"><img src="assets/logos/arc.svg" alt="" width="34" height="34" loading="lazy"><strong>Arc</strong><span>2 TSDBs</span></a>
+<a class="tsdb-tile" href="https://griddb.net/en/" target="_blank" rel="noopener noreferrer" aria-label="GridDB official website or documentation, 4 TSDBs"><img src="assets/logos/griddb.png" alt="" width="34" height="34" loading="lazy"><strong>GridDB</strong><span>4 TSDBs</span></a>
+<a class="tsdb-tile" href="https://m3db.io/" target="_blank" rel="noopener noreferrer" aria-label="M3DB official website or documentation, 1 TSDB"><img src="assets/logos/m3db.png" alt="" width="34" height="34" loading="lazy"><strong>M3DB</strong><span>1 TSDB</span></a>
+<a class="tsdb-tile" href="https://cratedb.com/" target="_blank" rel="noopener noreferrer" aria-label="CrateDB official website or documentation, 4 TSDBs"><img src="assets/logos/cratedb.png" alt="" width="34" height="34" loading="lazy"><strong>CrateDB</strong><span>4 TSDBs</span></a>
+<a class="tsdb-tile" href="https://www.cnosdb.com/" target="_blank" rel="noopener noreferrer" aria-label="CnosDB official website or documentation, 3 TSDBs"><img src="assets/logos/cnosdb.png" alt="" width="34" height="34" loading="lazy"><strong>CnosDB</strong><span>3 TSDBs</span></a>
+<a class="tsdb-tile" href="https://arcadedb.com/" target="_blank" rel="noopener noreferrer" aria-label="ArcadeDB official website or documentation, 1 TSDB"><img src="assets/logos/arcadedb.png" alt="" width="34" height="34" loading="lazy"><strong>ArcadeDB</strong><span>1 TSDB</span></a>
+<a class="tsdb-tile" href="https://greptime.com/" target="_blank" rel="noopener noreferrer" aria-label="GreptimeDB official website or documentation, 1 TSDB"><img src="assets/logos/greptimedb.png" alt="" width="34" height="34" loading="lazy"><strong>GreptimeDB</strong><span>1 TSDB</span></a>
+<a class="tsdb-tile" href="https://www.ibm.com/docs/en/db2-event-store/2.0.0" target="_blank" rel="noopener noreferrer" aria-label="IBM Db2 Event Store official website or documentation, 4 TSDBs"><img src="assets/logos/ibm.png" alt="" width="34" height="34" loading="lazy"><strong>IBM Db2 Event Store</strong><span>4 TSDBs</span></a>
+<a class="tsdb-tile" href="https://docs.riak.com/riak/ts/1.5.2/" target="_blank" rel="noopener noreferrer" aria-label="Riak TS official website or documentation, 2 TSDBs"><img src="assets/logos/riak.png" alt="" width="34" height="34" loading="lazy"><strong>Riak TS</strong><span>2 TSDBs</span></a>
+<a class="tsdb-tile" href="https://bangdb.com/" target="_blank" rel="noopener noreferrer" aria-label="BangDB official website or documentation, 3 TSDBs"><img src="assets/logos/bangdb.png" alt="" width="34" height="34" loading="lazy"><strong>BangDB</strong><span>3 TSDBs</span></a>
+<a class="tsdb-tile" href="https://www.machbase.com/" target="_blank" rel="noopener noreferrer" aria-label="Machbase Neo official website or documentation, 5 TSDBs"><img src="assets/logos/machbase.png" alt="" width="34" height="34" loading="lazy"><strong>Machbase Neo</strong><span>5 TSDBs</span></a>
+<a class="tsdb-tile" href="https://github.com/4paradigm/OpenMLDB" target="_blank" rel="noopener noreferrer" aria-label="OpenMLDB official website or documentation, 3 TSDBs"><img src="assets/logos/openmldb.png" alt="" width="34" height="34" loading="lazy"><strong>OpenMLDB</strong><span>3 TSDBs</span></a>
+<a class="tsdb-tile" href="https://opengemini.github.io/" target="_blank" rel="noopener noreferrer" aria-label="openGemini official website or documentation, 1 TSDB"><img src="assets/logos/opengemini.png" alt="" width="34" height="34" loading="lazy"><strong>openGemini</strong><span>1 TSDB</span></a></div>
         <button type="button" class="expand-button" aria-expanded="false" aria-controls="tsdb-grid" id="toggle-tsdbs" hidden>Show all 22 tiles <span aria-hidden="true">↓</span></button>
       </section>
     </aside>
 
+    <div class="main-column">
     <section class="leaderboard" id="leaderboard" aria-labelledby="leaderboard-title">
       <div class="board-heading">
-        <h2 id="leaderboard-title"><img class="icon" src="trophy.svg" alt="" width="28" height="28">Leaderboard</h2>
+        <h2 id="leaderboard-title"><img class="icon" src="assets/icons/trophy.svg" alt="" width="28" height="28">Leaderboard</h2>
         <p>Evaluation results on TQTS-Bench.</p>
       </div>
-      <div class="view-switch" aria-label="Research views">
-        <button type="button" data-view="leaderboard" aria-pressed="true">Leaderboard</button>
-        <button type="button" data-view="papers" aria-pressed="false">Latest Papers <span id="paper-count">0</span></button>
-      </div>
-      <div id="leaderboard-view">
       <div class="score-switch" aria-label="Result provenance">
         <button type="button" data-score-view="verified" aria-pressed="true">Verified &amp; baselines</button>
         <button type="button" data-score-view="reported" aria-pressed="false">Paper-reported <span id="reported-count">0</span></button>
@@ -130,7 +126,7 @@
       <div id="results-panel" role="tabpanel" aria-labelledby="leaderboard-title">
         <div class="board-toolbar">
           <div class="metric-heading"><strong>Execution Accuracy <abbr title="Execution Accuracy">EX</abbr> (%)</strong><span>Higher is better <span aria-hidden="true">↑</span></span></div>
-          <div class="search-control" hidden><label for="search">Find a model or method</label><div class="search-input"><img class="icon" src="search.svg" alt="" width="17" height="17"><input id="search" type="search" placeholder="Search entries" autocomplete="off" spellcheck="false"></div></div>
+          <div class="search-control" hidden><label for="search">Find a model or method</label><div class="search-input"><img class="icon" src="assets/icons/search.svg" alt="" width="17" height="17"><input id="search" type="search" placeholder="Search entries" autocomplete="off" spellcheck="false"></div></div>
         </div>
         <p class="category-note" id="category-note">Models and methods are shown together. All methods use GPT-4o-mini; model and method results do not share a common backbone.</p>
         <p class="table-hint">Swipe horizontally to view all scores <span aria-hidden="true">→</span></p>
@@ -162,19 +158,22 @@
       </div>
 
       <section class="human-reference" id="human-reference" aria-labelledby="human-title">
-        <div class="human-heading"><h3 id="human-title"><img class="icon" src="users.svg" alt="" width="21" height="21">Human Reference</h3><span class="subset-label">10% subset</span></div>
+        <div class="human-heading"><h3 id="human-title"><img class="icon" src="assets/icons/users.svg" alt="" width="21" height="21">Human Reference</h3><span class="subset-label">10% subset</span></div>
         <p>Human evaluation was conducted on a randomly sampled 10% subset. These scores are a reference, not an entry in the full-benchmark ranking.</p>
         <dl class="human-scores"><div><dt>Easy</dt><dd>95.71%</dd></div><div><dt>Medium</dt><dd>85.52%</dd></div><div><dt>Hard</dt><dd>81.94%</dd></div><div><dt>Overall</dt><dd>87.34%</dd></div></dl>
       </section>
       <section class="reading-notes" aria-labelledby="notes-title">
-        <h3 id="notes-title"><img class="icon" src="info-circle.svg" alt="" width="20" height="20">Reading the Results</h3>
+        <h3 id="notes-title"><img class="icon" src="assets/icons/info-circle.svg" alt="" width="20" height="20">Reading the Results</h3>
         <p>Execution Accuracy (EX) measures whether the execution result matches the expected answer and thereby reflects the semantic correctness of the generated query.</p>
         <p>EX (%) is the Overall EX reported in Table 1 of the accompanying paper. Ranks are calculated within the selected category.</p>
         <p>Dates under Rank indicate the initial leaderboard publication date, September 28, 2026 (UTC), not the execution time of each experiment.</p>
       </section>
+    </section>
+    <section class="papers-section" id="papers" aria-labelledby="papers-title">
+      <div class="board-heading">
+        <h2 id="papers-title"><img class="icon" src="assets/icons/book-2.svg" alt="" width="28" height="28">Latest Papers <span id="paper-count" class="paper-count">0</span></h2>
+        <p>Recent arXiv research on natural-language querying over time-series data. Inclusion does not imply a TQTS-Bench result.</p>
       </div>
-      <div id="papers-view" hidden>
-        <p class="discovery-intro">Recent research on natural-language querying over time-series data, collected from arXiv. Inclusion does not imply a TQTS-Bench result.</p>
         <div class="papers-controls">
           <label for="paper-search">Search papers<input id="paper-search" type="search" placeholder="Title, author, or topic" autocomplete="off"></label>
           <label class="code-filter"><input id="paper-has-code" type="checkbox"> Has code</label>
@@ -182,8 +181,8 @@
         <div id="papers-list" class="papers-list"></div>
         <div class="papers-footer"><span id="papers-visible-count" role="status" aria-live="polite">0 papers</span><button type="button" id="show-more-papers" hidden>Show more</button></div>
         <p class="sync-note" id="sync-note">Paper discovery has not run yet.</p>
-      </div>
     </section>
+    </div>
   </main>
   <footer class="container site-footer"><span>TQTS-Bench</span><p>A multi-syntax benchmark for text-to-query over time-series databases.</p><a href="#top">Back to top <span aria-hidden="true">↑</span></a></footer>
 </body>
