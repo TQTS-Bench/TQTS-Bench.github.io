@@ -29,28 +29,45 @@
     <section aria-labelledby="submit-title">
       <h2 id="submit-title"><img class="icon" src="send.svg" alt="" width="24" height="24">Submit to the leaderboard</h2>
       <p>To request a leaderboard entry, email your submission archive or a downloadable link to <a href="mailto:lex2m673@gmail.com">lex2m673@gmail.com</a>. Use the subject <code>[TQTS-Bench Submission] &lt;method name&gt;</code>.</p>
-      <p>Include a short method description, your preferred display name, and any self-evaluated scores. Submissions are reviewed before leaderboard inclusion; sending an email does not automatically create an entry.</p>
-      <p class="submission-note"><strong>Both are required:</strong> the final predicted SQL (or native TSDB query) for each question, and the actual result obtained by executing that query against its benchmark database.</p>
+      <p>Include your preferred method display name and a short run description. Self-evaluated scores are optional. Submissions are reviewed before leaderboard inclusion; sending an email does not automatically create an entry.</p>
+      <p class="submission-note"><strong>Both are required:</strong> the final predicted query for each question, and the actual output obtained by executing that query against its benchmark database.</p>
     </section>
     <section aria-labelledby="files-title">
       <h2 id="files-title"><img class="icon" src="file-text.svg" alt="" width="24" height="24">Prepare your files</h2>
       <dl class="submission-files">
-        <div><dt>Predicted queries</dt><dd>Provide the exact final query text in UTF-8. Use SQL where applicable and the database's native query syntax otherwise. Preserve package identifiers and question identifiers from the benchmark release.</dd></div>
-        <div><dt>Execution results</dt><dd>Provide complete, machine-readable outputs, not screenshots, summaries, or scores alone. CSV is suitable for tabular outputs; JSON is suitable for structured outputs. Preserve column names, values, row order, timestamps and precision. Document types and null encoding; include all result sets when applicable.</dd></div>
-        <div><dt>Manifest</dt><dd>Map each package and question to its query file and result file. Record execution status, including errors, timeouts, skipped questions and successful empty results. A missing output must not be represented as an empty successful result.</dd></div>
-        <div><dt>Run description</dt><dd>State the benchmark release or revision, evaluated packages and questions, database versions and relevant settings, model/version, method, prompts, decoding settings, tools, execution timeouts, and any training or tuning on benchmark material. Include commands or scripts needed to reproduce the run where available.</dd></div>
+        <div><dt>submission.json</dt><dd>Submit one UTF-8 JSON object containing a <code>records</code> array. Each record must identify one benchmark question and contain the prediction and its execution evidence. Use the fields below; separate query files, result files and a manifest are not required.</dd></div>
+        <div><dt>README.md</dt><dd>State the method display name, model/version, benchmark and data revisions, evaluator revision, intended package/question coverage, execution timeout, and deviations from the released database setup. Briefly describe generation and candidate selection, and disclose reference-answer access, benchmark training/tuning or manual intervention. Detailed prompts, source code, logs and self-evaluated scores are optional.</dd></div>
+        <div><dt>Existing evaluator users</dt><dd>Run the evaluator with <code>--include-outputs</code> and submit its per-model report, with private paths and credentials removed from metadata and diagnostics. Without this flag, raw execution outputs are omitted. Submit each model's detailed report, not only a multi-model summary.</dd></div>
+        <div><dt>Preserve runner output</dt><dd><code>generated_stdout</code> is a JSON string containing the exact output returned by the benchmark runner. Do not convert it to a new table, round numbers, sort rows, rename fields, flatten labels, or discard timestamps or nulls. JSON escaping is lossless; replacing the output with a parsed JSON object is not this format.</dd></div>
+      </dl>
+      <h3>Record fields</h3>
+      <dl class="submission-files">
+        <div><dt>Question identity</dt><dd><code>database_id</code>: exact package ID. <code>qa_id</code>: exact question ID from that package. The pair must be unique and must match the declared benchmark revision.</dd></div>
+        <div><dt>Prediction</dt><dd><code>generated_query</code>: final query string, without explanatory prose. <code>executed_generated_query</code>: query actually executed after runner transformations, or <code>null</code> if it was not executed.</dd></div>
+        <div><dt>Execution evidence</dt><dd><code>generated_stdout</code> and <code>generated_stderr</code>: runner output strings; use <code>""</code> when captured but empty, and <code>null</code> when not produced. <code>generated_returncode</code>: integer runner return code (0 for success), or <code>null</code> when not executed. Retain any captured partial output on failure.</dd></div>
+        <div><dt>Time context</dt><dd><code>evaluation_time</code>: the fixed reference time from the package configuration, not the wall-clock submission time; use <code>null</code> only when the package defines none. Preserve <code>temporal_binding</code> when emitted by the evaluator. Relative-time queries must use the benchmark's reference time and timezone.</dd></div>
+        <div><dt>Failure information</dt><dd>Include <code>stage</code> and <code>detail</code> for failed, skipped or unexecuted questions, explaining the cause. Use an empty <code>generated_query</code> only if generation produced none. Do not omit failed questions or label a timeout as a successful empty result.</dd></div>
       </dl>
       <details>
-        <summary>Suggested archive layout</summary>
-        <pre><code>submission.zip
-  README.md
-  manifest.jsonl
-  queries/
-    &lt;package_id&gt;/&lt;question_id&gt;.sql
-  results/
-    &lt;package_id&gt;/&lt;question_id&gt;.csv</code></pre>
-        <p>This layout is a suggestion, not an evaluator-specific schema. Use <code>.txt</code> for non-SQL queries and <code>.json</code> for non-tabular results. Your manifest must unambiguously connect every output to the original benchmark question.</p>
+        <summary>Example JSON structure</summary>
+        <pre><code>{
+  "records": [
+    {
+      "database_id": "&lt;package ID from the release&gt;",
+      "qa_id": "&lt;question ID from that package&gt;",
+      "generated_query": "&lt;final query&gt;",
+      "executed_generated_query": "&lt;query actually executed&gt;",
+      "evaluation_time": "&lt;package reference time, or null&gt;",
+      "generated_returncode": 0,
+      "generated_stdout": "&lt;exact runner output as a string&gt;",
+      "generated_stderr": ""
+    }
+  ]
+}</code></pre>
+        <p>Replace the illustrative placeholders with real values; use the JSON value <code>null</code>, not the string <code>"null"</code>, where applicable. Include one record for every question in the declared scope. Compress the two submission files if needed.</p>
       </details>
+      <p>The benchmark supplies reference queries, reference outputs and per-question matching policies. You do not need to submit them. Existing report fields such as <code>gold_query</code>, <code>gold_stdout</code>, <code>match_policy</code> and <code>passed</code> may be retained, but participant-supplied references, policies and scores are not authoritative.</p>
+      <p>This is an intake format aligned with evaluator report fields, not a new command-line upload mode. The main evaluator generates and executes queries; it does not directly read a submission file. Submissions require validation and review before scoring.</p>
     </section>
     <section aria-labelledby="evaluation-title">
       <h2 id="evaluation-title"><img class="icon" src="trophy.svg" alt="" width="24" height="24">Keep evaluation comparable</h2>
