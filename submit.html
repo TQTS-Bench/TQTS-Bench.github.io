@@ -27,62 +27,27 @@
   </header>
   <main id="guidelines" class="submission-content container">
     <section aria-labelledby="submit-title">
-      <h2 id="submit-title"><img class="icon" src="send.svg" alt="" width="24" height="24">Submit to the leaderboard</h2>
-      <p>To request a leaderboard entry, email your submission archive or a downloadable link to <a href="mailto:lex2m673@gmail.com">lex2m673@gmail.com</a>. Use the subject <code>[TQTS-Bench Submission] &lt;method name&gt;</code>.</p>
-      <p>Include your preferred method display name and a short run description. Self-evaluated scores are optional. Submissions are reviewed before leaderboard inclusion; sending an email does not automatically create an entry.</p>
-      <p class="submission-note"><strong>Both are required:</strong> the final predicted query for each question, and the actual output obtained by executing that query against its benchmark database.</p>
+      <h2 id="submit-title"><img class="icon" src="send.svg" alt="" width="24" height="24">How to submit</h2>
+      <p>To submit to the TQTS-Bench leaderboard, send your files as a compressed archive or a downloadable link to <a href="mailto:lex2m673@gmail.com">lex2m673@gmail.com</a>.</p>
+      <p>Use the email subject <strong>[TQTS-Bench Submission] &lt;method name&gt;</strong>. Results will be reviewed before being added to the leaderboard.</p>
     </section>
     <section aria-labelledby="files-title">
-      <h2 id="files-title"><img class="icon" src="file-text.svg" alt="" width="24" height="24">Prepare your files</h2>
-      <dl class="submission-files">
-        <div><dt>submission.json</dt><dd>Submit one UTF-8 JSON object containing a <code>records</code> array. Each record must identify one benchmark question and contain the prediction and its execution evidence. Use the fields below; separate query files, result files and a manifest are not required.</dd></div>
-        <div><dt>README.md</dt><dd>State the method display name, model/version, benchmark and data revisions, evaluator revision, intended package/question coverage, execution timeout, and deviations from the released database setup. Briefly describe generation and candidate selection, and disclose reference-answer access, benchmark training/tuning or manual intervention. Detailed prompts, source code, logs and self-evaluated scores are optional.</dd></div>
-        <div><dt>Existing evaluator users</dt><dd>Run the evaluator with <code>--include-outputs</code> and submit its per-model report, with private paths and credentials removed from metadata and diagnostics. Without this flag, raw execution outputs are omitted. Submit each model's detailed report, not only a multi-model summary.</dd></div>
-        <div><dt>Preserve runner output</dt><dd><code>generated_stdout</code> is a JSON string containing the exact output returned by the benchmark runner. Do not convert it to a new table, round numbers, sort rows, rename fields, flatten labels, or discard timestamps or nulls. JSON escaping is lossless; replacing the output with a parsed JSON object is not this format.</dd></div>
-      </dl>
-      <h3>Record fields</h3>
-      <dl class="submission-files">
-        <div><dt>Question identity</dt><dd><code>database_id</code>: exact package ID. <code>qa_id</code>: exact question ID from that package. The pair must be unique and must match the declared benchmark revision.</dd></div>
-        <div><dt>Prediction</dt><dd><code>generated_query</code>: final query string, without explanatory prose. <code>executed_generated_query</code>: query actually executed after runner transformations, or <code>null</code> if it was not executed.</dd></div>
-        <div><dt>Execution evidence</dt><dd><code>generated_stdout</code> and <code>generated_stderr</code>: runner output strings; use <code>""</code> when captured but empty, and <code>null</code> when not produced. <code>generated_returncode</code>: integer runner return code (0 for success), or <code>null</code> when not executed. Retain any captured partial output on failure.</dd></div>
-        <div><dt>Time context</dt><dd><code>evaluation_time</code>: the fixed reference time from the package configuration, not the wall-clock submission time; use <code>null</code> only when the package defines none. Preserve <code>temporal_binding</code> when emitted by the evaluator. Relative-time queries must use the benchmark's reference time and timezone.</dd></div>
-        <div><dt>Failure information</dt><dd>Include <code>stage</code> and <code>detail</code> for failed, skipped or unexecuted questions, explaining the cause. Use an empty <code>generated_query</code> only if generation produced none. Do not omit failed questions or label a timeout as a successful empty result.</dd></div>
-      </dl>
-      <details>
-        <summary>Example JSON structure</summary>
-        <pre><code>{
-  "records": [
-    {
-      "database_id": "&lt;package ID from the release&gt;",
-      "qa_id": "&lt;question ID from that package&gt;",
-      "generated_query": "&lt;final query&gt;",
-      "executed_generated_query": "&lt;query actually executed&gt;",
-      "evaluation_time": "&lt;package reference time, or null&gt;",
-      "generated_returncode": 0,
-      "generated_stdout": "&lt;exact runner output as a string&gt;",
-      "generated_stderr": ""
-    }
-  ]
-}</code></pre>
-        <p>Replace the illustrative placeholders with real values; use the JSON value <code>null</code>, not the string <code>"null"</code>, where applicable. Include one record for every question in the declared scope. Compress the two submission files if needed.</p>
-      </details>
-      <p>The benchmark supplies reference queries, reference outputs and per-question matching policies. You do not need to submit them. Existing report fields such as <code>gold_query</code>, <code>gold_stdout</code>, <code>match_policy</code> and <code>passed</code> may be retained, but participant-supplied references, policies and scores are not authoritative.</p>
-      <p>This is an intake format aligned with evaluator report fields, not a new command-line upload mode. The main evaluator generates and executes queries; it does not directly read a submission file. Submissions require validation and review before scoring.</p>
-    </section>
-    <section aria-labelledby="evaluation-title">
-      <h2 id="evaluation-title"><img class="icon" src="trophy.svg" alt="" width="24" height="24">Keep evaluation comparable</h2>
+      <h2 id="files-title"><img class="icon" src="file-text.svg" alt="" width="24" height="24">What to include</h2>
       <ul>
-        <li>Submit one final prediction and its corresponding execution result per question. If the system generates multiple candidates, describe its automatic selection procedure; do not manually choose answers using reference results.</li>
-        <li>Execute predictions on the benchmark database contents without changing the data to make predictions succeed. Disclose any import transformations, unavailable packages, or other departures from the released setup.</li>
-        <li>Report the full evaluated scope, including failures. Clearly label partial evaluations and their denominator; do not present a subset score as a full-benchmark score.</li>
-        <li>Disclose access to reference queries or answers, manual intervention, and any additional information supplied to the model.</li>
+        <li><strong>Predicted queries:</strong> one final query for each question, clearly identified by its benchmark package and question ID.</li>
+        <li><strong>Execution results:</strong> the complete outputs obtained by running those queries on the corresponding benchmark databases. Match each output to its query and identify failures or skipped questions.</li>
+        <li><strong>A short method description:</strong> your preferred leaderboard display name, model or method used, benchmark version, evaluated scope, and any departures from the standard evaluation setting. Self-evaluated scores are optional.</li>
       </ul>
+      <p>No database dumps, source datasets, or reference answers are required.</p>
     </section>
-    <section aria-labelledby="anonymous-title">
-      <h2 id="anonymous-title"><img class="icon" src="users.svg" alt="" width="24" height="24">Prepare an anonymous submission</h2>
-      <p>Use a method alias if you wish to remain anonymous. Author names and affiliations are not required in the submission archive. Check file metadata, shared-link names and logs for identifying information.</p>
-      <p>Do not include credentials, access tokens, private connection strings, internal hostnames or personal filesystem paths. Remove these from configuration and logs without altering query semantics or result values. If required outputs contain sensitive material, contact the submission address before sending them; do not silently redact evaluation results.</p>
-      <p>No database dumps or source datasets are required. Submit predictions, execution outputs and reproducibility information only.</p>
+    <section aria-labelledby="notes-title">
+      <h2 id="notes-title"><img class="icon" src="info-circle.svg" alt="" width="24" height="24">Submission notes</h2>
+      <ul>
+        <li>Preserve the execution outputs and use the benchmark's database contents and reference time settings.</li>
+        <li>Submit one final result per question. Disclose manual intervention or use of reference answers; do not manually select predictions based on their correctness.</li>
+        <li>Clearly label partial evaluations. Do not omit failed questions from the declared evaluation scope.</li>
+        <li>You may use an anonymous method name. Do not include credentials, private connection details, or identifying metadata.</li>
+      </ul>
     </section>
   </main>
   <footer class="container site-footer"><span>TQTS-Bench</span><p>Submission guidelines</p><a href="index.html#top">Back to benchmark</a></footer>
