@@ -1,0 +1,50 @@
+name: Refresh arXiv papers
+
+on:
+  schedule:
+    - cron: '17 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: paper-discovery-and-pages
+  cancel-in-progress: false
+
+jobs:
+  collect-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Collect arXiv papers
+        run: python collect_papers.py --data discovery.json --policy discovery-policy.json --script discovery.js
+      - name: Commit discovery update
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add discovery.json discovery.js
+          if ! git diff --cached --quiet; then
+            git commit -m 'Refresh arXiv paper discovery'
+            git push origin HEAD:main
+          fi
+      - name: Prepare static pages
+        run: |
+          mkdir _site
+          find . -maxdepth 1 -type f \( -name '*.html' -o -name '*.css' -o -name '*.js' -o -name '*.svg' -o -name '*.png' -o -name '*.txt' \) -exec cp {} _site/ \;
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy refreshed site
+        id: deployment
+        uses: actions/deploy-pages@v4
