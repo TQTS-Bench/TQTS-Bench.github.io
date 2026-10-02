@@ -201,7 +201,6 @@
         resultButton.type = 'button';
         resultButton.textContent = 'View result →';
         resultButton.addEventListener('click', () => {
-          selectView('leaderboard');
           selectScoreView('reported');
           search.value = scoreByPaperId.get(paper.id).name;
           renderScores();
@@ -221,13 +220,6 @@
     document.querySelector('#papers-visible-count').textContent = `${Math.min(matches.length, paperLimit)} of ${matches.length} papers`;
     document.querySelector('#show-more-papers').hidden = matches.length <= paperLimit;
   }
-  function selectView(value) {
-    document.querySelector('#leaderboard-view').hidden = value !== 'leaderboard';
-    document.querySelector('#papers-view').hidden = value !== 'papers';
-    for (const button of document.querySelectorAll('[data-view]')) button.setAttribute('aria-pressed', String(button.dataset.view === value));
-    document.querySelector('.board-heading p').textContent = value === 'papers' ? 'New research on natural-language querying over time-series data.' : 'Evaluation results on TQTS-Bench.';
-  }
-  document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => selectView(button.dataset.view)));
   paperSearch.addEventListener('input', () => { paperLimit = 10; renderPapers(); });
   hasCode.addEventListener('change', () => { paperLimit = 10; renderPapers(); });
   document.querySelector('#show-more-papers').addEventListener('click', () => { paperLimit += 10; renderPapers(); });
