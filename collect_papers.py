@@ -183,12 +183,18 @@ def collect(previous, policy, now=None):
     selected = {item["id"]: item for item in previous.get("papers", [])}
     exclude_ids = set(policy.get("excludeIds", []))
     include_ids = set(policy.get("includeIds", []))
+    code_urls = policy.get("codeUrls", {})
     for search in SEARCHES:
         for paper in query_arxiv(search, cutoff):
             if paper["id"] in exclude_ids or paper["title"].casefold() == SELF_TITLE:
                 selected.pop(paper["id"], None)
                 continue
             if relevant(paper, include_ids):
+                if paper["id"] in code_urls:
+                    code_url = code_urls[paper["id"]]
+                    if urllib.parse.urlsplit(code_url).scheme != "https":
+                        raise ValueError("Code override must be HTTPS")
+                    paper["codeUrl"] = code_url
                 old = selected.get(paper["id"])
                 if old is None or paper["version"] >= old["version"]:
                     selected[paper["id"]] = paper
