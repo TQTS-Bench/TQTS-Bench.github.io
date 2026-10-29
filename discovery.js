@@ -1,6 +1,6 @@
 window.TQTS_DISCOVERY = {
   "schemaVersion": 1,
-  "lastSuccessfulSync": "2026-10-27T01:49:04Z",
+  "lastSuccessfulSync": "2026-10-29T02:00:25Z",
   "papers": [
     {
       "id": "2610.30593",
