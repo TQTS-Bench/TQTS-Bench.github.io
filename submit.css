@@ -1,9 +1,5 @@
-/* Extend the existing light, green research-site design without changing it. */
-.submission-hero { min-height:0; }
-.submission-hero .hero-copy { padding:44px 0 48px; }
-.submission-hero h1 { font-size:clamp(32px,4vw,48px); }
-.submission-hero .subtitle { font-size:20px; margin-top:18px; }
-.submission-content { max-width:860px; padding-top:38px; }
+/* Submission content uses the shared leaderboard page heading. */
+.submission-content { max-width:860px; padding-top:48px; }
 .submission-content section { margin-bottom:38px; }
 .submission-content h2 { display:flex; align-items:center; gap:12px; font-size:24px; line-height:1.35; margin:0 0 16px; }
 .submission-content p { margin:12px 0; }
@@ -18,4 +14,4 @@
 .submission-content pre { overflow-x:auto; padding:16px; background:var(--soft); line-height:1.65; }
 .submission-content li { margin-bottom:12px; padding-left:4px; }
 .submission-content ul { padding-left:22px; }
-@media(max-width:540px) { .submission-files div { grid-template-columns:1fr; gap:6px; } .submission-content h2 { font-size:22px; } .submission-hero .hero-copy { padding:32px 0; } .submission-content details { padding:14px; } }
+@media(max-width:640px) { .submission-content { padding-top:32px; } .submission-files div { grid-template-columns:1fr; gap:6px; } .submission-content h2 { font-size:22px; } .submission-content details { padding:14px; } }

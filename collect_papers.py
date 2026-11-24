@@ -1,236 +1,214 @@
 #!/usr/bin/env python3
-"""Collect arXiv metadata for the static TQTS-Bench paper view.
+"""Evidence-based paper discovery. Never extracts scores or executes paper code.
 
-Only explicit overall execution-accuracy claims in an abstract become
-paper-reported scores. The collector never executes paper code or queries.
+arXiv supplies candidate metadata; public full text supplies benchmark evidence.
+Papers With Code's read API is an optional full-text source, followed by arXiv.
+No local manuscript content, author information, or private paper ID is uploaded.
 """
-
 import argparse
 import json
 import re
 import sys
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
+from html.parser import HTMLParser
 from pathlib import Path
 
-API = "https://export.arxiv.org/api/query"
-ATOM = "{http://www.w3.org/2005/Atom}"
-SEARCHES = (
-    'all:"natural language querying" AND all:"time series"',
-    'all:"text-to-query" AND all:"time-series"',
-    'all:"natural language" AND all:"PromQL"',
-    'all:"time-series database"',
-)
-SOURCE_RE = re.compile(r"(?:time[ -]series|\btsdbs?\b|\bpromql\b|\bprometheus\b|\binfluxdb\b)", re.I)
-LANGUAGE_RE = re.compile(r"(?:natural[ -]language|text[ -]to[ -]query|language[ -]driven|\bnl2\w+\b|\bnlq\w*\b)", re.I)
-QUERY_RE = re.compile(r"(?:quer(?:y|ies|ying)|retriev\w*|search\w*|promql|text[ -]to[ -]query)", re.I)
-TITLE_QUERY_RE = re.compile(r"(?:quer(?:y|ies|ying)|retriev\w*|search\w*|promql|text[ -]to[ -]query)", re.I)
-EXCLUDE_RE = re.compile(r"(?:video[ -]text temporal localization|forecasting only)", re.I)
-CODE_RE = re.compile(r"https?://(?:www\.)?(?:github\.com|gitlab\.com|huggingface\.co)/[^\s<>)\]]+", re.I)
-BENCHMARK_RE = re.compile(r"\bTQTS[ -]Bench\b", re.I)
-SCORE_RE = re.compile(
-    r"\b(?:overall\s+(?:execution\s+accuracy|EX)|execution\s+accuracy\s+overall)"
-    r"\s*(?:of|is|:|=|reaches?|achieves?)?\s*(\d{1,2}(?:\.\d{1,2})?)\s*%",
-    re.I,
-)
-ID_RE = re.compile(r"/(\d{4}\.\d{4,5})(?:v(\d+))?$")
-USER_AGENT = "TQTS-Bench-Paper-Discovery/1.0 (+https://tqts-bench.github.io/)"
-SELF_TITLE = "tqts-bench: a multi-syntax benchmark for text-to-query over time-series databases"
-LAST_REQUEST = 0.0
+ATOM = '{http://www.w3.org/2005/Atom}'
+API = 'https://export.arxiv.org/api/query'
+SEARCHES = ('all:"TQTS-Bench"', 'all:"text-to-query" AND all:"time-series"',
+            'all:"natural language" AND all:"PromQL"',
+            'all:"natural language querying" AND all:"time series"')
+BENCHMARK = re.compile(r'\bTQTS\s*[-\u2010-\u2015]?\s*Bench\b', re.I)
+PAPER_ID = re.compile(r'/(\d{4}\.\d{4,5})(?:v(\d+))?$')
+CODE = re.compile(r'https://(?:github\.com|gitlab\.com|huggingface\.co)/[^\s<>\]\)"}]+')
+LAST_REQUEST = 0
 
 
-def request(url):
+class TextOnly(HTMLParser):
+    def __init__(self):
+        super().__init__(); self.parts = []; self.hidden = 0
+    def handle_starttag(self, tag, attrs):
+        if tag in ('script', 'style'): self.hidden += 1
+    def handle_endtag(self, tag):
+        if tag in ('script', 'style'): self.hidden = max(0, self.hidden - 1)
+    def handle_data(self, data):
+        if not self.hidden: self.parts.append(data)
+
+
+def clean(text):
+    return ' '.join((text or '').split())
+
+
+def request(url, limit=4_000_000):
     global LAST_REQUEST
     for attempt in range(3):
-        wait = 3.2 - (time.monotonic() - LAST_REQUEST)
-        if wait > 0:
-            time.sleep(wait)
+        delay = 3.2 - (time.monotonic() - LAST_REQUEST)
+        if delay > 0: time.sleep(delay)
         LAST_REQUEST = time.monotonic()
         try:
-            with urllib.request.urlopen(
-                urllib.request.Request(url, headers={"User-Agent": USER_AGENT}), timeout=35
-            ) as response:
-                payload = response.read(3_000_001)
-                if len(payload) > 3_000_000:
-                    raise ValueError("arXiv response exceeded 3 MB")
-                return payload
-        except (OSError, ValueError) as error:
-            if attempt == 2:
-                raise RuntimeError(f"arXiv request failed: {error}") from error
-            time.sleep(2 ** attempt)
-    raise AssertionError("unreachable")
-
-
-def clean(value):
-    return " ".join((value or "").split())
+            req = urllib.request.Request(url, headers={'User-Agent': 'TQTS-Bench-Discovery/2.0 (+https://tqts-bench.github.io/)'})
+            with urllib.request.urlopen(req, timeout=30) as response:
+                data = response.read(limit + 1)
+                if len(data) > limit: raise ValueError('Source exceeds size limit')
+                return data
+        except urllib.error.HTTPError as error:
+            if error.code in (404, 410): return None
+            if attempt == 2: raise
+        except OSError:
+            if attempt == 2: raise
+        time.sleep(2 ** attempt)
 
 
 def parse_entry(entry):
-    raw_id = clean(entry.findtext(f"{ATOM}id"))
-    match = ID_RE.search(raw_id)
-    if not match:
-        return None
-    paper_id, version = match.group(1), int(match.group(2) or 1)
-    title = clean(entry.findtext(f"{ATOM}title"))
-    abstract = clean(entry.findtext(f"{ATOM}summary"))
-    authors = [clean(author.findtext(f"{ATOM}name")) for author in entry.findall(f"{ATOM}author")]
-    link = CODE_RE.search(abstract)
-    code_url = link.group(0).rstrip(".,;") if link else None
-    return {
-        "id": paper_id,
-        "version": version,
-        "title": title,
-        "abstract": abstract,
-        "authors": authors,
-        "published": clean(entry.findtext(f"{ATOM}published")),
-        "updated": clean(entry.findtext(f"{ATOM}updated")),
-        "url": f"https://arxiv.org/abs/{paper_id}",
-        "codeUrl": code_url,
-        "source": "auto-collected",
-    }
+    match = PAPER_ID.search(clean(entry.findtext(ATOM + 'id')))
+    if not match: return None
+    abstract = clean(entry.findtext(ATOM + 'summary'))
+    code = CODE.search(abstract)
+    return dict(id=match[1], version=int(match[2] or 1),
+                title=clean(entry.findtext(ATOM + 'title')), abstract=abstract,
+                published=clean(entry.findtext(ATOM + 'published')),
+                updated=clean(entry.findtext(ATOM + 'updated')),
+                url=f'https://arxiv.org/abs/{match[1]}',
+                codeUrl=code[0].rstrip('.,;') if code else None)
 
 
-def relevant(paper, include_ids):
-    if paper["title"].casefold() == SELF_TITLE:
-        return False
-    if paper["id"] in include_ids:
-        return True
-    title = paper["title"]
-    whole = f'{title} {paper["abstract"]}'
-    return bool(
-        SOURCE_RE.search(whole)
-        and LANGUAGE_RE.search(whole)
-        and QUERY_RE.search(whole)
-        and TITLE_QUERY_RE.search(title)
-        and not EXCLUDE_RE.search(title)
-    )
+def is_self(paper, policy):
+    title = paper['title'].casefold()
+    return paper['id'] in policy.get('excludeIds', []) or title.startswith(('tqts-bench:', 'tqts bench:')) or ('multi-syntax benchmark' in title and 'time-series' in title)
 
 
-def extract_score(paper):
-    """Accept a single explicit overall TQTS-Bench EX claim in the abstract."""
-    abstract = paper["abstract"]
-    if not BENCHMARK_RE.search(abstract):
-        return None
-    evidence = []
-    for sentence in re.split(r"(?<=[.!?])\s+", abstract):
-        if BENCHMARK_RE.search(sentence):
-            match = SCORE_RE.search(sentence)
-            if match:
-                evidence.append((sentence, float(match.group(1))))
-    if len(evidence) != 1:
-        return None
-    sentence, score = evidence[0]
-    method_name = paper["title"].split(":", 1)[0]
-    if method_name.casefold() not in sentence.casefold():
-        return None
-    if not 0 <= score <= 100:
-        return None
-    return {
-        "paperId": paper["id"],
-        "name": method_name[:100],
-        "type": "method",
-        "group": "Paper-reported result",
-        "overall": score,
-        "metric": "Overall Execution Accuracy (EX, %)",
-        "scope": "TQTS-Bench overall, as stated in the paper abstract",
-        "paperVersion": paper["version"],
-        "evidenceUrl": f'{paper["url"]}v{paper["version"]}',
-        "evidenceText": sentence,
-        "source": "auto-collected",
-        "verification": "paper-reported",
-    }
+def evidence(text, url):
+    match = BENCHMARK.search(text)
+    if not match: return None
+    excerpt = clean(text[max(0, match.start()-140):match.end()+240])
+    return {'kind': 'benchmark-reference', 'text': excerpt, 'url': url}
 
 
 def query_arxiv(search, cutoff):
-    results = []
+    papers = []
     for start in range(0, 1000, 100):
-        params = urllib.parse.urlencode({
-            "search_query": search,
-            "start": start,
-            "max_results": 100,
-            "sortBy": "lastUpdatedDate",
-            "sortOrder": "descending",
-        })
-        root = ET.fromstring(request(f"{API}?{params}"))
-        entries = root.findall(f"{ATOM}entry")
-        for entry in entries:
-            paper = parse_entry(entry)
-            if paper:
-                results.append(paper)
-        if len(entries) < 100:
-            break
-        if entries and all(
-            datetime.fromisoformat(item["updated"].replace("Z", "+00:00")) < cutoff
-            for item in results[-len(entries):]
-        ):
-            break
-    return [paper for paper in results if datetime.fromisoformat(paper["updated"].replace("Z", "+00:00")) >= cutoff]
+        params = urllib.parse.urlencode(dict(search_query=search, start=start,
+            max_results=100, sortBy='lastUpdatedDate', sortOrder='descending'))
+        payload = request(API + '?' + params)
+        if not payload: raise RuntimeError('arXiv returned no feed')
+        feed = ET.fromstring(payload)
+        entries = feed.findall(ATOM + 'entry')
+        if any((e.findtext(ATOM+'id') or '').endswith('/errors') for e in entries):
+            raise RuntimeError('arXiv returned an error feed')
+        batch = [p for e in entries if (p := parse_entry(e))]
+        papers.extend(p for p in batch if p['updated'] >= cutoff)
+        if len(entries) < 100 or (batch and batch[-1]['updated'] < cutoff): break
+    else:
+        raise RuntimeError('arXiv pagination limit reached; refusing to mark incomplete scan successful')
+    return papers
 
 
-def collect(previous, policy, now=None):
+def full_text(paper):
+    """Only requests public paper IDs obtained from arXiv metadata."""
+    pid = f'{paper["id"]}v{paper["version"]}'
+    sources = [f'https://arxiv.org/html/{pid}',
+               f'https://paperswithcode.co/api/v1/research/papers/{paper["id"]}/read']
+    for url in sources:
+        try:
+            body = request(url)
+            if not body: continue
+            decoded = body.decode('utf-8')
+            if 'arxiv.org/html' in url:
+                parser = TextOnly(); parser.feed(decoded)
+                text = clean(' '.join(parser.parts))
+                if len(text) > 3000: return text, url
+            # PwC read responses may be bounded. Use it only to prove a match;
+            # absence in a partial response is never a negative classification.
+            elif BENCHMARK.search(decoded): return clean(decoded), url
+        except (OSError, ValueError):
+            continue
+    url = f'https://arxiv.org/pdf/{pid}'
+    body = request(url, 25_000_000)
+    if body:
+        import fitz
+        with fitz.open(stream=body, filetype='pdf') as doc:
+            text = clean(' '.join(page.get_text() for page in doc))
+        if len(text) > 2000: return text, url
+    raise RuntimeError('Public full text unavailable')
+
+
+def collect(previous, policy, cache, now=None):
     now = now or datetime.now(timezone.utc)
-    last = previous.get("lastSuccessfulSync")
-    cutoff = min(
-        datetime.fromisoformat(last.replace("Z", "+00:00")) - timedelta(days=7)
-        if last else now - timedelta(days=365),
-        now - timedelta(days=365),
-    )
-    if cutoff > now:
-        cutoff = now - timedelta(days=365)
-    selected = {item["id"]: item for item in previous.get("papers", [])}
-    exclude_ids = set(policy.get("excludeIds", []))
-    include_ids = set(policy.get("includeIds", []))
-    code_urls = policy.get("codeUrls", {})
+    stamp = now.replace(microsecond=0).isoformat().replace('+00:00','Z')
+    cutoff = (now - timedelta(days=policy.get('lookbackDays', 730))).isoformat().replace('+00:00','Z')
+    candidates = {p['id']: p for p in previous.get('papers', [])}
+    errors = []
     for search in SEARCHES:
-        for paper in query_arxiv(search, cutoff):
-            if paper["id"] in exclude_ids or paper["title"].casefold() == SELF_TITLE:
-                selected.pop(paper["id"], None)
+        try:
+            for paper in query_arxiv(search, cutoff): candidates[paper['id']] = paper
+        except Exception as error:
+            errors.append(f'Candidate search failed: {type(error).__name__}')
+    selected = {p['id']: p for p in previous.get('papers', []) if p.get('evidence') and not is_self(p, policy)}
+    for pid, paper in candidates.items():
+        if is_self(paper, policy): selected.pop(pid, None); continue
+        old = cache.get(pid, {})
+        # Recheck negative results weekly and updated versions immediately.
+        cached = old.get('version') == paper['version'] and old.get('checkedAt','') >= (now-timedelta(days=7)).isoformat().replace('+00:00','Z')
+        proof = old.get('evidence') if cached else evidence(paper.get('abstract',''), paper['url'])
+        if not cached and not proof:
+            try:
+                text, source = full_text(paper)
+                proof = evidence(text, source)
+                if not paper.get('codeUrl') and (link := CODE.search(text)): paper['codeUrl'] = link[0].rstrip('.,;')
+            except Exception as error:
+                errors.append(f'{pid}: full text check failed ({type(error).__name__})')
                 continue
-            if relevant(paper, include_ids):
-                if paper["id"] in code_urls:
-                    code_url = code_urls[paper["id"]]
-                    if urllib.parse.urlsplit(code_url).scheme != "https":
-                        raise ValueError("Code override must be HTTPS")
-                    paper["codeUrl"] = code_url
-                old = selected.get(paper["id"])
-                if old is None or paper["version"] >= old["version"]:
-                    selected[paper["id"]] = paper
-    for paper_id in exclude_ids:
-        selected.pop(paper_id, None)
-    selected = {paper_id: paper for paper_id, paper in selected.items() if relevant(paper, include_ids)}
-    papers = sorted(selected.values(), key=lambda item: (item["published"], item["id"]), reverse=True)
-    scores = [result for paper in papers if (result := extract_score(paper))]
-    return {
-        "schemaVersion": 1,
-        "lastSuccessfulSync": now.replace(microsecond=0).isoformat().replace("+00:00", "Z"),
-        "papers": papers,
-        "reportedResults": scores,
-    }
+        if cached and not paper.get('codeUrl'):
+            paper['codeUrl'] = old.get('codeUrl')
+        cache[pid] = dict(version=paper['version'], checkedAt=stamp, evidence=proof, codeUrl=paper.get('codeUrl'))
+        if proof:
+            # Only whitelisted public fields are serialized; no authors or scores.
+            item = {k:paper.get(k) for k in ('id','version','title','published','updated','url','codeUrl')}
+            override = policy.get('codeUrls',{}).get(pid)
+            if override and override.startswith('https://'): item['codeUrl'] = override
+            # Keep verbatim citation text in the ignored cache only: it can name the anonymous authors.
+            item['evidence'] = {'kind': proof['kind'], 'url': proof['url'],
+                                'text': 'This public paper explicitly references TQTS-Bench.'}
+            selected[pid] = item
+        else: selected.pop(pid, None)
+    result = dict(schemaVersion=2, lastAttempt=stamp,
+                  lastAttemptStatus='failed' if errors else 'success',
+                  lastSuccessfulSync=previous.get('lastSuccessfulSync') if previous.get('schemaVersion')==2 else None,
+                  papers=sorted(selected.values(), key=lambda p:(p['published'],p['id']), reverse=True))
+    if not errors: result['lastSuccessfulSync'] = stamp
+    return result, errors
+
+
+def save(data, script, value):
+    content = json.dumps(value, ensure_ascii=False, indent=2)+'\n'
+    # Stage both complete outputs before replacing either one.
+    a = data.with_suffix('.json.tmp'); b = script.with_suffix('.js.tmp')
+    a.write_text(content, encoding='utf-8')
+    b.write_text('window.TQTS_DISCOVERY = '+content.rstrip()+';\n', encoding='utf-8')
+    a.replace(data); b.replace(script)
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--data", type=Path, required=True)
-    parser.add_argument("--policy", type=Path, required=True)
-    parser.add_argument("--script", type=Path, required=True)
-    args = parser.parse_args()
-    previous = json.loads(args.data.read_text(encoding="utf-8"))
-    policy = json.loads(args.policy.read_text(encoding="utf-8"))
-    if previous.get("schemaVersion") != 1:
-        raise ValueError("Unsupported discovery schema")
-    updated = collect(previous, policy)
-    content = json.dumps(updated, ensure_ascii=False, indent=2) + "\n"
-    args.data.write_text(content, encoding="utf-8")
-    args.script.write_text("window.TQTS_DISCOVERY = " + content.rstrip() + ";\n", encoding="utf-8")
-    print(f'Collected {len(updated["papers"])} papers, {len(updated["reportedResults"])} explicit scores.')
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--data',type=Path,required=True)
+    parser.add_argument('--policy',type=Path,required=True)
+    parser.add_argument('--script',type=Path,required=True)
+    parser.add_argument('--cache',type=Path,default=Path('.cache/discovery-checks.json'))
+    args=parser.parse_args()
+    previous=json.loads(args.data.read_text(encoding='utf-8'))
+    policy=json.loads(args.policy.read_text(encoding='utf-8'))
+    cache=json.loads(args.cache.read_text()) if args.cache.exists() else {}
+    result, errors=collect(previous,policy,cache)
+    save(args.data,args.script,result)
+    args.cache.parent.mkdir(parents=True,exist_ok=True)
+    args.cache.write_text(json.dumps(cache,indent=2),encoding='utf-8')
+    print(f'Confirmed {len(result["papers"])} papers; {len(errors)} incomplete checks. No scores extracted.')
+    for error in errors: print(error,file=sys.stderr)
+    return 1 if errors else 0
 
-
-if __name__ == "__main__":
-    try:
-        main()
-    except Exception as error:
-        print(f"Paper collection failed: {error}", file=sys.stderr)
-        sys.exit(1)
+if __name__=='__main__': sys.exit(main())

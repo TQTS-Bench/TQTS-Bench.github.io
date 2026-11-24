@@ -1,4 +1,4 @@
-/* Baselines from Table 1; reviewed submissions are added separately. */
+/* Verified benchmark results; scores preserved from the original site. */
 window.TQTS_RESULTS = {
   "source": "Table 1 of the accompanying paper",
   "metric": "Execution Accuracy (EX, %)",
@@ -96,7 +96,9 @@ window.TQTS_RESULTS = {
       "hard": 1.16,
       "overall": 5.83,
       "source": "benchmark-baseline",
-      "verification": "verified"
+      "verification": "verified",
+      "paperUrl": "https://doi.org/10.1145/3802035",
+      "backbone": "GPT-4o-mini"
     },
     {
       "name": "OpenSearch-SQL",
@@ -108,7 +110,9 @@ window.TQTS_RESULTS = {
       "hard": 1.09,
       "overall": 6.27,
       "source": "benchmark-baseline",
-      "verification": "verified"
+      "verification": "verified",
+      "paperUrl": "https://doi.org/10.1145/3725331",
+      "backbone": "GPT-4o-mini"
     },
     {
       "name": "RSL-SQL",
@@ -120,7 +124,9 @@ window.TQTS_RESULTS = {
       "hard": 0.95,
       "overall": 4.62,
       "source": "benchmark-baseline",
-      "verification": "verified"
+      "verification": "verified",
+      "paperUrl": "https://doi.org/10.48550/arXiv.2411.00073",
+      "backbone": "GPT-4o-mini"
     },
     {
       "name": "DAIL-SQL",
@@ -132,7 +138,9 @@ window.TQTS_RESULTS = {
       "hard": 0,
       "overall": 0.54,
       "source": "benchmark-baseline",
-      "verification": "verified"
+      "verification": "verified",
+      "paperUrl": "https://doi.org/10.14778/3641204.3641221",
+      "backbone": "GPT-4o-mini"
     },
     {
       "name": "DIN-SQL",
@@ -144,7 +152,9 @@ window.TQTS_RESULTS = {
       "hard": 1.23,
       "overall": 5.14,
       "source": "benchmark-baseline",
-      "verification": "verified"
+      "verification": "verified",
+      "paperUrl": "https://doi.org/10.52202/075280-1577",
+      "backbone": "GPT-4o-mini"
     },
     {
       "name": "PromCopilot",
@@ -156,7 +166,9 @@ window.TQTS_RESULTS = {
       "hard": 0.07,
       "overall": 0.69,
       "source": "benchmark-baseline",
-      "verification": "verified"
+      "verification": "verified",
+      "paperUrl": "https://doi.org/10.1145/3797910",
+      "backbone": "GPT-4o-mini"
     }
   ],
   "human": {
