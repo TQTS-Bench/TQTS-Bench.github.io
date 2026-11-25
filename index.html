@@ -2,9 +2,9 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive"><meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-<meta name="color-scheme" content="light"><link rel="icon" href="database.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
-<title>TQTS-Bench | A Multi-Syntax Benchmark</title><meta name="description" content="A multi-syntax benchmark for text-to-query over time-series databases: 6,125 QA pairs, 97 databases, and 23 query syntaxes."></head><body>
-<a class="skip-link" href="#overview">Skip to abstract</a><header class="hero" id="top"><div class="hero-copy container"><h1><span class="brand-tqts">TQTS</span><span class="brand-bench">-Bench</span></h1><p class="subtitle">A Multi-Syntax Benchmark for<br>Text-to-Query over Time-Series Databases</p><div class="resource-buttons"><a class="button primary" href="leaderboard.html"><img src="trophy-color.svg" class="icon" alt="" width="19" height="19">Scores</a><button class="button paper-disabled" disabled aria-label="Paper unavailable during anonymous review"><img src="file-text-color.svg" class="icon" alt="" width="19" height="19">Paper</button><a class="button" href="https://anonymous.4open.science/r/TQTS-Bench-00CD" target="_blank" rel="noopener noreferrer"><img src="github.svg" class="icon" alt="" width="19" height="19">Code</a><a class="button" href="https://huggingface.co/datasets/TQTS-Bench/TQTS-Bench" target="_blank" rel="noopener noreferrer"><img src="huggingface.svg" class="icon" alt="" width="19" height="19">Data</a><a class="button" href="submit.html"><img src="send-color.svg" class="icon" alt="" width="19" height="19">Submit</a></div></div></header><main>
+<meta name="color-scheme" content="light"><link rel="icon" href="database.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css?v=20261125-buttons">
+<title>TQTS-Bench | A Multi-Syntax Benchmark</title><meta name="description" content="A multi-syntax benchmark for text-to-query over time-series databases: 6,125 QA pairs, 97 databases, and 23 query syntaxes."><link rel="stylesheet" href="experiment.css?v=20261125-human"></head><body>
+<a class="skip-link" href="#overview">Skip to abstract</a><header class="hero" id="top"><div class="hero-copy container"><h1><span class="brand-tqts">TQTS</span><span class="brand-bench">-Bench</span></h1><p class="subtitle">A Multi-Syntax Benchmark for<br>Text-to-Query over Time-Series Databases</p><div class="resource-buttons"><a class="button primary" href="leaderboard.html"><img src="trophy-color.svg" class="icon" alt="" width="19" height="19">Leaderboard</a><button class="button paper-disabled" disabled aria-label="Paper unavailable during anonymous review"><img src="file-text-color.svg" class="icon" alt="" width="19" height="19">Paper</button><a class="button" href="https://anonymous.4open.science/r/TQTS-Bench-00CD" target="_blank" rel="noopener noreferrer"><img src="github.svg" class="icon" alt="" width="19" height="19">Code</a><a class="button" href="https://huggingface.co/datasets/TQTS-Bench/TQTS-Bench" target="_blank" rel="noopener noreferrer"><img src="huggingface.svg" class="icon" alt="" width="19" height="19">Data</a><a class="button" href="submit.html"><img src="send-color.svg" class="icon" alt="" width="19" height="19">Submit</a></div></div></header><main>
 <section class="section" id="overview"><div class="container"><h2>Abstract</h2>
 <div class="prose"><p>Large language models (LLMs) have significantly advanced natural language querying over relational databases, yet their ability to query time-series databases (TSDBs) remains largely unassessed. Existing benchmarks fail to adequately capture the non-unified query syntaxes, diverse application domains, and unique time-specific query intents inherent to TSDBs. To address this gap, we introduce TQTS-Bench, a multi-syntax benchmark for evaluating text-to-query capabilities over TSDBs. TQTS-Bench contains 6,125 high-quality question–answering (QA) pairs spanning 97 TSDBs, 23 distinct query syntaxes, 22 application domains, and 4 types of time-specific query intents. It is constructed through a human-centric AI-assisted workflow, where all QA pairs are carefully reviewed and revised by domain experts to ensure quality and correctness. Extensive evaluations of advanced LLMs and state-of-the-art text-to-query methods reveal challenges in querying TSDBs. Even the best-performing model evaluated, Claude-Opus-5, achieves only 48.98% execution accuracy, while humans reach 87.34%. Error analysis reveals that this performance gap mainly stems from the heterogeneous query syntaxes across different TSDBs, misinterpretation of time-specific intents, and incorrect schema linking. These findings highlight new opportunities to narrow the gap between current LLM capabilities and the requirements of TSDB queries in real-world applications. The benchmark is available at: <a href="https://anonymous.4open.science/r/TQTS-Bench-00CD" target="_blank" rel="noopener noreferrer">https://anonymous.4open.science/r/TQTS-Bench-00CD</a>.</p></div>
 <dl class="facts"><div><dd>6,125</dd><dt>QA pairs</dt></div><div><dd>97</dd><dt>Time-series databases</dt></div><div><dd>23</dd><dt>Query syntaxes</dt></div><div><dd>22</dd><dt>Application domains</dt></div></dl>
@@ -33,4 +33,89 @@
 <a class="hex" href="https://opengemini.github.io/" target="_blank" rel="noopener noreferrer" aria-label="openGemini official website or documentation, 1 TSDB"><span class="hex-face"><img src="opengemini.png" alt="" width="50" height="50" loading="lazy"><span>openGemini</span></span></a></div></div></section>
 <section class="section" id="pipeline"><div class="container"><h2>Pipeline</h2><div class="prose"><p>The construction of TQTS-Bench consists of two main steps: TSDB construction and QA construction and verification. The TSDB construction step collects and curates 97 high-quality TSDBs, and the QA construction and verification step constructs 6,125 QA pairs with a human-centric AI-assisted workflow.</p></div>
 <a class="figure-link" href="pipeline.png" target="_blank" rel="noopener noreferrer" aria-label="View the construction pipeline at full size"><img class="research-figure" src="pipeline.png" width="2835" height="1171" loading="lazy" alt="Pipeline: select TSDB systems, collect 427 datasets and 1,405 seed QAs, curate 97 databases, identify nine intents, construct QA pairs with human-AI collaboration, and verify 6,125 pairs through independent review and adjudication."></a>
-<div class="pipeline-copy"><div><h3>TSDB construction</h3><p>We gather publicly available datasets from multiple real-world sources, including official websites, hosting platforms that export data from specific TSDBs, and datasets documented as being collected or stored using TSDBs. We manually inspect the candidate datasets based on data authenticity and schema complexity, and finally select 97 representative source datasets.</p></div><div><h3>QA construction and verification</h3><p>Two annotators independently hand-write queries based on the question, schema, and provided TSDB context. If both annotators obtain results consistent with the unverified answer and both determine that the question is answerable on the target TSDB, the QA pair is accepted as verified. Otherwise, the case is escalated to an adjudicator.</p></div></div></div></section></main><footer class="site-footer container"><a class="footer-brand" href="index.html" aria-label="TQTS-Bench home"><span class="brand-tqts">tqts</span><span class="brand-bench">-bench</span></a><span>Text-to-Query over Time-Series Databases</span><a href="submit.html">Submit a result</a></footer></body></html>
+<div class="pipeline-copy"><div><h3>TSDB construction</h3><p>We gather publicly available datasets from multiple real-world sources, including official websites, hosting platforms that export data from specific TSDBs, and datasets documented as being collected or stored using TSDBs. We manually inspect the candidate datasets based on data authenticity and schema complexity, and finally select 97 representative source datasets.</p></div><div><h3>QA construction and verification</h3><p>Two annotators independently hand-write queries based on the question, schema, and provided TSDB context. If both annotators obtain results consistent with the unverified answer and both determine that the question is answerable on the target TSDB, the QA pair is accepted as verified. Otherwise, the case is escalated to an adjudicator.</p></div></div></div></section>
+<section class="section section-alt experiment" id="experiment" aria-labelledby="experiment-title">
+  <div class="container">
+    <h2 id="experiment-title">Experiment</h2>
+    <p class="experiment-intro">Execution Accuracy (EX) measures whether a generated query produces the expected answer.</p>
+    <div class="experiment-grid">
+      <article class="experiment-column" aria-labelledby="experiment-models">
+        <header><h3 id="experiment-models">Models</h3></header>
+        <ol class="experiment-results" aria-label="Model execution accuracy">
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>Claude-Opus-5</span><output>48.98<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="48.98" aria-label="Claude-Opus-5 overall execution accuracy">48.98%</meter>
+</li>
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>GPT-6-Sol</span><output>46.38<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="46.38" aria-label="GPT-6-Sol overall execution accuracy">46.38%</meter>
+</li>
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>Gemini-3.7-Flash</span><output>44.65<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="44.65" aria-label="Gemini-3.7-Flash overall execution accuracy">44.65%</meter>
+</li>
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>Kimi-K3</span><output>43.15<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="43.15" aria-label="Kimi-K3 overall execution accuracy">43.15%</meter>
+</li>
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>GLM-5.3-Flash</span><output>34.61<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="34.61" aria-label="GLM-5.3-Flash overall execution accuracy">34.61%</meter>
+</li>
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>Qwen3.8-Flash</span><output>27.04<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="27.04" aria-label="Qwen3.8-Flash overall execution accuracy">27.04%</meter>
+</li>
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>DeepSeek-V4-Pro</span><output>22.51<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="22.51" aria-label="DeepSeek-V4-Pro overall execution accuracy">22.51%</meter>
+</li>
+        </ol>
+      </article>
+      <article class="experiment-column" aria-labelledby="experiment-methods">
+        <header><h3 id="experiment-methods">Methods</h3></header>
+        <ol class="experiment-results" aria-label="Method execution accuracy">
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>OpenSearch-SQL</span><output>6.27<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="6.27" aria-label="OpenSearch-SQL overall execution accuracy">6.27%</meter>
+</li>
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>DeepEye-SQL</span><output>5.83<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="5.83" aria-label="DeepEye-SQL overall execution accuracy">5.83%</meter>
+</li>
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>DIN-SQL</span><output>5.14<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="5.14" aria-label="DIN-SQL overall execution accuracy">5.14%</meter>
+</li>
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>RSL-SQL</span><output>4.62<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="4.62" aria-label="RSL-SQL overall execution accuracy">4.62%</meter>
+</li>
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>PromCopilot</span><output>0.69<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="0.69" aria-label="PromCopilot overall execution accuracy">0.69%</meter>
+</li>
+<li class="experiment-result">
+  <div class="experiment-result-label"><span>DAIL-SQL</span><output>0.54<span class="score-unit">%</span></output></div>
+  <meter min="0" max="100" value="0.54" aria-label="DAIL-SQL overall execution accuracy">0.54%</meter>
+</li>
+        </ol>
+      </article>
+      <article class="experiment-column experiment-human" aria-labelledby="experiment-human">
+        <header><h3 id="experiment-human">Human</h3></header>
+        <div class="human-result">
+          <span class="human-metric">Overall EX</span>
+          <output>87.34<span class="score-unit">%</span></output>
+          <p class="human-sample">Randomly sampled 10% subset</p>
+          <meter min="0" max="100" value="87.34" aria-label="Human overall execution accuracy">87.34%</meter>
+        </div>
+        <dl class="human-breakdown" aria-label="Human execution accuracy by difficulty">
+          <div><dt>Easy</dt><dd>95.71%</dd></div>
+          <div><dt>Medium</dt><dd>85.52%</dd></div>
+          <div><dt>Hard</dt><dd>81.94%</dd></div>
+        </dl>
+      </article>
+    </div>
+  </div>
+</section>
+</main><footer class="site-footer container"><a class="footer-brand" href="index.html" aria-label="TQTS-Bench home"><span class="brand-tqts">tqts</span><span class="brand-bench">-bench</span></a><a href="submit.html">Submit a result</a></footer></body></html>

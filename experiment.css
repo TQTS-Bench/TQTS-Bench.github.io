@@ -1,0 +1,29 @@
+/* Paper results: three comparable columns, a shared 0–100 scale, no animation.
+   Existing design retained: variance 4, motion 2, density 4. */
+.experiment-intro{max-width:760px;text-align:center;margin:0 auto 36px;color:var(--muted);font-size:16px;line-height:1.7}
+.experiment-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+.experiment-column{min-width:0;padding-inline:26px;border-left:1px solid transparent}
+.experiment-column + .experiment-column{border-left-color:#d7d9d2}
+.experiment-column header{margin-bottom:24px}
+.experiment-column h3{font-size:24px;line-height:1.3;letter-spacing:-.025em;margin:0 0 6px;color:var(--text)}
+.experiment-results{padding:0;margin:0;list-style:none;display:grid;gap:23px}
+.experiment-result-label{display:flex;justify-content:space-between;align-items:baseline;gap:9px;font-size:15px;line-height:1.45}
+.experiment-result-label > span{min-width:0;overflow-wrap:anywhere}
+.experiment-result output{flex-shrink:0;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+.experiment .score-unit{font-size:.76em;margin-left:2px;font-weight:400}
+.experiment meter{display:block;width:100%;height:5px;margin-top:9px;border:0;border-radius:0;background:transparent;appearance:none;-webkit-appearance:none}
+.experiment meter::-webkit-meter-bar{height:5px;background:transparent;border:0;border-radius:0;box-shadow:none}
+.experiment meter::-webkit-meter-optimum-value{background:#666e68;border-radius:0}
+.experiment meter::-moz-meter-bar{background:#666e68;border-radius:0}
+.human-result{padding-top:0}
+.human-metric{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+.human-result output{display:block;font-size:48px;line-height:1.2;letter-spacing:-.045em;font-weight:600;font-variant-numeric:tabular-nums}
+.human-result .score-unit{font-size:25px;letter-spacing:0}
+.human-sample{font-size:13px;line-height:1.6;margin:8px 0 0;color:var(--muted)}
+.human-result meter{margin-top:14px}
+.human-breakdown{margin:28px 0 24px;display:grid;gap:15px}
+.human-breakdown > div{display:flex;justify-content:space-between;gap:16px;font-size:15px;line-height:1.5}
+.human-breakdown dt{color:var(--muted)}
+.human-breakdown dd{margin:0;font-variant-numeric:tabular-nums}
+@media(max-width:1050px){.experiment-column{padding-inline:18px}.experiment-result-label{font-size:14px}}
+@media(max-width:760px){.experiment-grid{grid-template-columns:1fr;gap:32px;max-width:500px;margin-inline:auto}.experiment-column{padding:0;border-left:0}.experiment-column + .experiment-column{padding:28px 0 0;border-left:0;border-top:1px solid #d7d9d2}.experiment-column header{margin-bottom:22px}.experiment-results{gap:20px}.experiment-result-label{font-size:16px}.experiment-column h3{font-size:23px}}
